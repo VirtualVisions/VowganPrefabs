@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9914ebf076e3a8042aa8a672343ca61c, type: 3}
+  m_Name: Wood Light Collision Preset
+  m_EditorClassIdentifier: 
+  VolumeRange: {x: 0.8, y: 1}
+  PitchRange: {x: 0.9, y: 1.1}
+  MinimumVelocity: 0
+  Clips:
+  - {fileID: 8300000, guid: 73a27487eae998b4f96f86f13833a735, type: 3}
+  - {fileID: 8300000, guid: f0da5f4b506c86143938d0439aaea0ec, type: 3}
+  - {fileID: 8300000, guid: fbe24a786e7a61846881880dfa8d1b95, type: 3}
+  - {fileID: 8300000, guid: 255acc9d98413bc4cb29965c684bd27f, type: 3}
+  - {fileID: 8300000, guid: 6e92142d6ef430c44bd3e18e654103f5, type: 3}

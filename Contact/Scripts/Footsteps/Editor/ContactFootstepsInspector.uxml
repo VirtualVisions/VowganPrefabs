@@ -1,0 +1,26 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement name="Root" style="flex-grow: 1;">
+        <ui:VisualElement name="Header" style="background-color: rgba(0, 0, 0, 0.1); padding-left: 16px; padding-right: 8px; padding-top: 8px; padding-bottom: 8px; flex-direction: row;">
+            <ui:VisualElement name="Icon" style="background-image: url(&apos;/Assets/Vowgan/Contact/Scripts/Footsteps/Contact Footsteps Icon.png&apos;); width: 48px; height: 48px; -unity-background-scale-mode: scale-to-fit; margin-right: 8px;" />
+            <ui:VisualElement name="LabelContainer" style="-unity-text-align: middle-left; justify-content: center;">
+                <ui:Label text="Contact" name="TitleLabel" style="font-size: 20px; -unity-font-style: bold;" />
+                <ui:Label text="Footsteps" name="ScriptLabel" style="font-size: 16px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="VariableContainer" style="margin-left: 12px; margin-right: 0; margin-top: 16px; margin-bottom: 8px;">
+            <ui:VisualElement name="ValuesContainer" style="border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; border-bottom-color: rgba(0, 0, 0, 0.2); border-top-left-radius: 8px; border-bottom-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-left-color: rgba(0, 0, 0, 0.2); border-right-color: rgba(0, 0, 0, 0.2); border-top-color: rgba(0, 0, 0, 0.2); margin-left: 0; margin-right: 4px; margin-top: 0; margin-bottom: 0; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px;">
+                <ui:IMGUIContainer name="GroundLayersContainer" style="margin-left: 2px; margin-right: 2px; margin-top: 2px; margin-bottom: 2px;" />
+                <uie:PropertyField name="VolumeRangeProperty" binding-path="VolumeRange" tooltip="The random range for variation in the sound effect volume." />
+                <uie:PropertyField name="PitchRangeProperty" binding-path="PitchRange" tooltip="The random range for variation in the sound effect pitch." />
+                <uie:FloatField label="Min Landing Velocity" value="1" binding-path="MinimumLandingVelocity" name="MinLandingVelocityField" />
+                <uie:CurveField label="Footstep Rate" binding-path="FootstepRate" name="FootstepRateCurve" />
+                <uie:CurveField label="Volume Curve" binding-path="VolumeCurve" name="VolumeCurve" />
+                <ui:Toggle label="Use Fallback Preset" value="true" binding-path="UseFallbackPreset" style="margin-top: 3px;" />
+            </ui:VisualElement>
+            <ui:IMGUIContainer name="PresetsContainer" style="margin-top: 8px;" />
+            <ui:VisualElement name="ButtonContainer" style="align-items: center; margin-top: 4px;">
+                <ui:Button text="Find all Presets" name="FindAllPresetsButton" style="opacity: 1; width: 140px; height: 30px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

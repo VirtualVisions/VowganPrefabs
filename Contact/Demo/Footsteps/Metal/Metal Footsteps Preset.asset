@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa7f6c56df2c6d74896b3c3b6dea2547, type: 3}
+  m_Name: Metal Footsteps Preset
+  m_EditorClassIdentifier: 
+  Materials:
+  - {fileID: 2100000, guid: 4cabe004b5d3b8041956e2e378ebb10e, type: 2}
+  Clips:
+  - {fileID: 8300000, guid: 91af66a6d1e7e704080f4083b9f15dbe, type: 3}
+  - {fileID: 8300000, guid: 1912b0bcfef9e4f44967dcca821ad1ab, type: 3}
+  - {fileID: 8300000, guid: c43da002ea39bc648b87ba81e5a9a54a, type: 3}
+  - {fileID: 8300000, guid: d1433065032c9554896150e17459b840, type: 3}
+  - {fileID: 8300000, guid: a2cb1ae4a46a6984db4b40352f200e4f, type: 3}
+  JumpClips:
+  - {fileID: 8300000, guid: 91af66a6d1e7e704080f4083b9f15dbe, type: 3}
+  LandingClips:
+  - {fileID: 8300000, guid: a2cb1ae4a46a6984db4b40352f200e4f, type: 3}

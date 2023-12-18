@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9914ebf076e3a8042aa8a672343ca61c, type: 3}
+  m_Name: Plastic Collision Preset Light
+  m_EditorClassIdentifier: 
+  VolumeRange: {x: 0.8, y: 1}
+  PitchRange: {x: 0.9, y: 1.1}
+  MinimumVelocity: 0
+  Clips:
+  - {fileID: 8300000, guid: 63f542ebd6e337743a6ea86ed32cd9e0, type: 3}
+  - {fileID: 8300000, guid: bdbbd1b6609d5344782445accb10b7ec, type: 3}
+  - {fileID: 8300000, guid: aa9dc1f264b7cc64f9a95d70d07fa87a, type: 3}
+  - {fileID: 8300000, guid: b3b98b89c9fd41d4fb1a6dd9b3eca3b5, type: 3}
+  - {fileID: 8300000, guid: 04ac9d7759ee1854abdd203c2f19015b, type: 3}

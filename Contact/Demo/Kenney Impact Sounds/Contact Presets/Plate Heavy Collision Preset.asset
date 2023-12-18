@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9914ebf076e3a8042aa8a672343ca61c, type: 3}
+  m_Name: Plate Heavy Collision Preset
+  m_EditorClassIdentifier: 
+  VolumeRange: {x: 0.8, y: 1}
+  PitchRange: {x: 0.9, y: 1.1}
+  MinimumVelocity: 6
+  Clips:
+  - {fileID: 8300000, guid: 1faebad2da34ff847b7a9b2014038493, type: 3}
+  - {fileID: 8300000, guid: 685126353cc465242bd37a299019b379, type: 3}
+  - {fileID: 8300000, guid: 0ef8b0600dd015143831d0d610eb7edf, type: 3}
+  - {fileID: 8300000, guid: 6ead743f898db294bb796aef33bf7882, type: 3}
+  - {fileID: 8300000, guid: f3b9c566cd3d685449c1492ce6078358, type: 3}

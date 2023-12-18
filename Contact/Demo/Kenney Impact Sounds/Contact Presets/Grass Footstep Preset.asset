@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa7f6c56df2c6d74896b3c3b6dea2547, type: 3}
+  m_Name: Grass Footstep Preset
+  m_EditorClassIdentifier: 
+  Materials: []
+  Clips:
+  - {fileID: 8300000, guid: 9daa10ca385e76c458b536c76b9a1224, type: 3}
+  - {fileID: 8300000, guid: 5101f7860f5e39e46835c8b4951f3275, type: 3}
+  - {fileID: 8300000, guid: a4fead856138cc5438dcc241da32eb71, type: 3}
+  - {fileID: 8300000, guid: 49bd3ac14d03d5045bf141080aa6f24c, type: 3}
+  - {fileID: 8300000, guid: d5eefe7ce7efe3249a17a3143f021cc5, type: 3}
+  JumpClips:
+  - {fileID: 8300000, guid: 5101f7860f5e39e46835c8b4951f3275, type: 3}
+  LandingClips:
+  - {fileID: 8300000, guid: a4fead856138cc5438dcc241da32eb71, type: 3}

@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement name="Header" style="background-color: rgba(0, 0, 0, 0.1); padding-left: 16px; padding-right: 8px; padding-top: 8px; padding-bottom: 8px; flex-direction: row;">
+        <ui:VisualElement name="Icon" style="background-image: url(&apos;/Assets/Vowgan/Contact/Scripts/Contact Icon.png&apos;); width: 48px; height: 48px; -unity-background-scale-mode: scale-to-fit; margin-right: 8px;" />
+        <ui:VisualElement name="LabelContainer" style="-unity-text-align: middle-left; justify-content: center;">
+            <ui:Label text="Contact" name="TitleLabel" style="font-size: 20px; -unity-font-style: bold;" />
+            <ui:Label text="Audio Player" name="ScriptLabel" style="font-size: 16px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="VariableContainer" style="margin-left: 12px; margin-right: 0; margin-top: 16px; margin-bottom: 8px;">
+        <ui:VisualElement name="SettingsContainer" style="border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; border-bottom-color: rgba(0, 0, 0, 0.2); border-top-left-radius: 8px; border-bottom-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-left-color: rgba(0, 0, 0, 0.2); border-right-color: rgba(0, 0, 0, 0.2); border-top-color: rgba(0, 0, 0, 0.2); margin-left: 0; margin-right: 4px; margin-top: 0; margin-bottom: 0; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px;">
+            <uie:ObjectField label="Audio Prefab" name="AudioPrefabField" allow-scene-objects="false" />
+            <uie:FloatField label="Source Count" value="32" name="SourceCountField" binding-path="SourceCount" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

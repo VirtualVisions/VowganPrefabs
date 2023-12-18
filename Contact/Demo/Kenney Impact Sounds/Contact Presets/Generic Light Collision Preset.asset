@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9914ebf076e3a8042aa8a672343ca61c, type: 3}
+  m_Name: Generic Light Collision Preset
+  m_EditorClassIdentifier: 
+  VolumeRange: {x: 0.8, y: 1}
+  PitchRange: {x: 0.9, y: 1.1}
+  MinimumVelocity: 0
+  Clips:
+  - {fileID: 8300000, guid: 41dd1d69fdd510b4f808f346075e4b2e, type: 3}
+  - {fileID: 8300000, guid: 1a2a70ffa2c947641bc0ecee3607d96d, type: 3}
+  - {fileID: 8300000, guid: 4049b6be8be30c84a9c02d5a144be979, type: 3}
+  - {fileID: 8300000, guid: f95073916d7c6a244baed9bc03618671, type: 3}
+  - {fileID: 8300000, guid: b9ab101b57454f4448c6e8dbaf295ac2, type: 3}

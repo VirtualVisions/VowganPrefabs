@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9914ebf076e3a8042aa8a672343ca61c, type: 3}
+  m_Name: Glass Collision Preset Heavy
+  m_EditorClassIdentifier: 
+  VolumeRange: {x: 0.8, y: 1}
+  PitchRange: {x: 0.9, y: 1.1}
+  MinimumVelocity: 4
+  Clips:
+  - {fileID: 8300000, guid: a8b957f562bebaa4dbf03567c1aa366b, type: 3}
+  - {fileID: 8300000, guid: 4ed599c640bbd6343bfddb090c83a2fb, type: 3}
+  - {fileID: 8300000, guid: e5d0bde26971e67439ef0c2e7a237328, type: 3}
+  - {fileID: 8300000, guid: 50684be95e6d4fc40aca9318f34aac64, type: 3}
+  - {fileID: 8300000, guid: c6b121c682aaa6e47a469f6a7e0e2e22, type: 3}

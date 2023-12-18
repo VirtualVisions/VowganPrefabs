@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9914ebf076e3a8042aa8a672343ca61c, type: 3}
+  m_Name: Glass Light Collision Preset
+  m_EditorClassIdentifier: 
+  VolumeRange: {x: 0.8, y: 1}
+  PitchRange: {x: 0.9, y: 1.1}
+  MinimumVelocity: 0
+  Clips:
+  - {fileID: 8300000, guid: 72735b67991cdd94b9dfcf6ec8ac502b, type: 3}
+  - {fileID: 8300000, guid: 4bd272b175cfd7d44a724e3ce78e6a74, type: 3}
+  - {fileID: 8300000, guid: 803eef2133fec7849b4416ed7f70d2f9, type: 3}
+  - {fileID: 8300000, guid: 769be7bd66e8e3248ad71f4a4e0bea63, type: 3}
+  - {fileID: 8300000, guid: 7ea2be5525e1b6347ab02256f63fae41, type: 3}

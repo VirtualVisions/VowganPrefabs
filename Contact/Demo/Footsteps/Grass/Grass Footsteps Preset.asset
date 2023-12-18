@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa7f6c56df2c6d74896b3c3b6dea2547, type: 3}
+  m_Name: Grass Footsteps Preset
+  m_EditorClassIdentifier: 
+  Materials:
+  - {fileID: 2100000, guid: dadd12290ac9fad48a3704f25e43a98e, type: 2}
+  Clips:
+  - {fileID: 8300000, guid: 1afa94e0729632c479cf025bf765171a, type: 3}
+  - {fileID: 8300000, guid: ffe4a0421c4075e499c0ac69bb5b2448, type: 3}
+  - {fileID: 8300000, guid: 4c7204e4778fece49a8822b65b1f9023, type: 3}
+  - {fileID: 8300000, guid: 87431185fa032704b8ddb126743fac75, type: 3}
+  - {fileID: 8300000, guid: b1acc6e575d31fa4ba0c882052c3c02b, type: 3}
+  - {fileID: 8300000, guid: 61701426cb9f1f6489c1e6cc34693fa4, type: 3}
+  - {fileID: 8300000, guid: d2b8e9a66bd97ae4fac6fc794134b75f, type: 3}
+  - {fileID: 8300000, guid: 107a425ce19a0684ea47b3989d7e509c, type: 3}
+  - {fileID: 8300000, guid: d030ef4ede2a0a94a875df170311eff8, type: 3}
+  - {fileID: 8300000, guid: 0caf801f1154e564bb4d3f0a1697279a, type: 3}
+  JumpClips:
+  - {fileID: 8300000, guid: 1afa94e0729632c479cf025bf765171a, type: 3}
+  LandingClips:
+  - {fileID: 8300000, guid: 0caf801f1154e564bb4d3f0a1697279a, type: 3}

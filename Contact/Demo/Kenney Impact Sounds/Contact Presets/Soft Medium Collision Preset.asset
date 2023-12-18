@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9914ebf076e3a8042aa8a672343ca61c, type: 3}
+  m_Name: Soft Medium Collision Preset
+  m_EditorClassIdentifier: 
+  VolumeRange: {x: 0.8, y: 1}
+  PitchRange: {x: 0.9, y: 1.1}
+  MinimumVelocity: 3
+  Clips:
+  - {fileID: 8300000, guid: 110abce92b31eb445923643be2717729, type: 3}
+  - {fileID: 8300000, guid: 5d73d93d21c6c7140848d52ee3853f71, type: 3}
+  - {fileID: 8300000, guid: 2d89fb3a2ddd8684d802ff66d17c2cff, type: 3}
+  - {fileID: 8300000, guid: e0ad1736196246544ad430717c21df17, type: 3}
+  - {fileID: 8300000, guid: 9f24dc6e741b6a346b992757fce821ea, type: 3}

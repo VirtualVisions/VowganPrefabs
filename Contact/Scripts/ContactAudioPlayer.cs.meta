@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4e269a3cea8513c49bf867c8e0475ff8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _udonSharpBackingUdonBehaviour: {instanceID: 0}
+  - AudioPrefab: {fileID: 2118841065512669065, guid: c86874ee00bccae4f83c3ec4072561d6,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

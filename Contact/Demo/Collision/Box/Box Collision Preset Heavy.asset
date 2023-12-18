@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9914ebf076e3a8042aa8a672343ca61c, type: 3}
+  m_Name: Box Collision Preset Heavy
+  m_EditorClassIdentifier: 
+  VolumeRange: {x: 0.8, y: 1}
+  PitchRange: {x: 0.9, y: 1.1}
+  MinimumVelocity: 4
+  Clips:
+  - {fileID: 8300000, guid: 6dae4948fcebe1847b722d3a71c4d071, type: 3}
+  - {fileID: 8300000, guid: 731cfe0583aecf0459baa588f4767762, type: 3}
+  - {fileID: 8300000, guid: 75f8e965842dba24da1d400c3f490656, type: 3}
+  - {fileID: 8300000, guid: 2c6842f48096e564d81af6006ef63164, type: 3}
+  - {fileID: 8300000, guid: aac790887909f024bab5736f8a22a4a3, type: 3}

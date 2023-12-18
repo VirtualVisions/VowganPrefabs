@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9914ebf076e3a8042aa8a672343ca61c, type: 3}
+  m_Name: Plastic Collision Preset Heavy
+  m_EditorClassIdentifier: 
+  VolumeRange: {x: 0.8, y: 1}
+  PitchRange: {x: 0.9, y: 1.1}
+  MinimumVelocity: 4
+  Clips:
+  - {fileID: 8300000, guid: 8a503f2de952d2844837f473032737cb, type: 3}
+  - {fileID: 8300000, guid: 9d2740bd713b4194bb833c5a7a72f15d, type: 3}
+  - {fileID: 8300000, guid: e911509227660e5418c4e4d18453ce07, type: 3}
+  - {fileID: 8300000, guid: b51e019129b887743a6cb984e021d55a, type: 3}
+  - {fileID: 8300000, guid: ae208c385f3b5434ca9f84357f9797c1, type: 3}

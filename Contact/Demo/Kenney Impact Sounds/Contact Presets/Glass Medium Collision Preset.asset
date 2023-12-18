@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9914ebf076e3a8042aa8a672343ca61c, type: 3}
+  m_Name: Glass Medium Collision Preset
+  m_EditorClassIdentifier: 
+  VolumeRange: {x: 0.8, y: 1}
+  PitchRange: {x: 0.9, y: 1.1}
+  MinimumVelocity: 3
+  Clips:
+  - {fileID: 8300000, guid: 501cdf6caa0648b4080c8877e8f6639d, type: 3}
+  - {fileID: 8300000, guid: 79da9370686ea7d40b0f01cadbf457f1, type: 3}
+  - {fileID: 8300000, guid: b3c4d38225d7f9c49bd1f2eef883de6c, type: 3}
+  - {fileID: 8300000, guid: 188cb5a39e54d294fb6157d7e0887444, type: 3}
+  - {fileID: 8300000, guid: 973f3d96b97e34542a784b723eadaa6c, type: 3}

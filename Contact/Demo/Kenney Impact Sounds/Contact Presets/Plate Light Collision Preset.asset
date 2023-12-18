@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9914ebf076e3a8042aa8a672343ca61c, type: 3}
+  m_Name: Plate Light Collision Preset
+  m_EditorClassIdentifier: 
+  VolumeRange: {x: 0.8, y: 1}
+  PitchRange: {x: 0.9, y: 1.1}
+  MinimumVelocity: 0
+  Clips:
+  - {fileID: 8300000, guid: cc727de0d8d4964488266ee4ef8f32c7, type: 3}
+  - {fileID: 8300000, guid: 35cd90bded8d25a4da4cb5ffa7e87fa2, type: 3}
+  - {fileID: 8300000, guid: 15996bfcc96b71f4eab60f50bcdc78e5, type: 3}
+  - {fileID: 8300000, guid: dc3310473e4746b42a5e93b247648f90, type: 3}
+  - {fileID: 8300000, guid: 74771fd0e6bc31b4483e7b55926c0887, type: 3}

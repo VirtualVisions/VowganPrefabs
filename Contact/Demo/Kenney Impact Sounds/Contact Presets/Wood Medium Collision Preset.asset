@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9914ebf076e3a8042aa8a672343ca61c, type: 3}
+  m_Name: Wood Medium Collision Preset
+  m_EditorClassIdentifier: 
+  VolumeRange: {x: 0.8, y: 1}
+  PitchRange: {x: 0.9, y: 1.1}
+  MinimumVelocity: 3
+  Clips:
+  - {fileID: 8300000, guid: 0c604b99da656c844943a19d064d79dd, type: 3}
+  - {fileID: 8300000, guid: 991f815c80798d04eb8fb38f82420aeb, type: 3}
+  - {fileID: 8300000, guid: 61dd94c37d6e05c428e3e621a384c28f, type: 3}
+  - {fileID: 8300000, guid: c565cd8536713544a997733affc4a426, type: 3}
+  - {fileID: 8300000, guid: 65fd3b4fe81361d41b81cf9747668dc6, type: 3}

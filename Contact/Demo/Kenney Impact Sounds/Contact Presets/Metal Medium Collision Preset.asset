@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9914ebf076e3a8042aa8a672343ca61c, type: 3}
+  m_Name: Metal Medium Collision Preset
+  m_EditorClassIdentifier: 
+  VolumeRange: {x: 0.8, y: 1}
+  PitchRange: {x: 0.9, y: 1.1}
+  MinimumVelocity: 3
+  Clips:
+  - {fileID: 8300000, guid: 56f21adb479ec3944954800e18966e5e, type: 3}
+  - {fileID: 8300000, guid: 8b413761ae7c2d649b66d9a06a6b0cad, type: 3}
+  - {fileID: 8300000, guid: 0c93b227892745d4ca7e4f1eb92a0630, type: 3}
+  - {fileID: 8300000, guid: 076bc75089817064e9bf34d62a49adf5, type: 3}
+  - {fileID: 8300000, guid: 36dc504d41967b841bd0153c8428090d, type: 3}

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa7f6c56df2c6d74896b3c3b6dea2547, type: 3}
+  m_Name: Carpet Footstep Preset
+  m_EditorClassIdentifier: 
+  Materials: []
+  Clips:
+  - {fileID: 8300000, guid: c67ebc344dca40b4dac8b8e7e3ce7010, type: 3}
+  - {fileID: 8300000, guid: 85d3d918c995ebb428abe9ff56e30439, type: 3}
+  - {fileID: 8300000, guid: 89124b1a71bdc314ab5d60ede8f8e9c6, type: 3}
+  - {fileID: 8300000, guid: b15292a43dfa38744ac32465a247458f, type: 3}
+  - {fileID: 8300000, guid: 5cf8f9f98d2af8c42a36e497fd090739, type: 3}
+  JumpClips:
+  - {fileID: 8300000, guid: 85d3d918c995ebb428abe9ff56e30439, type: 3}
+  LandingClips:
+  - {fileID: 8300000, guid: b15292a43dfa38744ac32465a247458f, type: 3}

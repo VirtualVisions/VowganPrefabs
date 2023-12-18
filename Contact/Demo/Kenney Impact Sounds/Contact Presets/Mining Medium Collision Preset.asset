@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9914ebf076e3a8042aa8a672343ca61c, type: 3}
+  m_Name: Mining Medium Collision Preset
+  m_EditorClassIdentifier: 
+  VolumeRange: {x: 0.8, y: 1}
+  PitchRange: {x: 0.9, y: 1.1}
+  MinimumVelocity: 3
+  Clips:
+  - {fileID: 8300000, guid: ca466c7c7258e7849809cb58c94233cd, type: 3}
+  - {fileID: 8300000, guid: 0d3cc1e1abd7def4685d200d1319557b, type: 3}
+  - {fileID: 8300000, guid: 37f3d64f3d09c3742817df0d50fc2d10, type: 3}
+  - {fileID: 8300000, guid: 06e3877104b2dfa4ba0f20bdeac2fe81, type: 3}
+  - {fileID: 8300000, guid: 4796e6047f2017c478742d5338796acd, type: 3}
