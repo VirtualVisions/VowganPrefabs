@@ -1,0 +1,40 @@
+License
+
+Vowgan 8-2022
+
+Permitted Uses
+
+You may integrate this Asset into other digital applications
+or assets.  Examples: VRChat worlds, VRChat or VRoid avatars.  
+
+You may use this Asset to create digital media.  Examples:
+still images, videos, or livestreams that include this Asset.  
+
+You may use any applications, assets, or media you create
+using the Asset for your own personal use.  Examples: playing
+VRChat using an avatar that incorporates this Asset.
+
+You may distribute any applications, assets, or media you
+create using this Asset for non-commercial purposes.
+Examples: publishing a VRChat world or avatar, publishing
+videos or streams on non-monetized platforms.
+
+You may distribute any applications, assets, or media you
+create using this Asset for indirectly commercial purposes.
+Examples: publishing videos or streams on monetized platforms,
+or using the Asset in Patreon-supported creative work.
+
+You may distribute any applications, assets, or media you
+create using this Asset for commercial purposes.  Examples:
+selling works that you create using this Asset, whether in a
+public marketplace or as a custom commission; selling videos
+that you create using this Asset.
+
+You may modify this Asset and use the modified Asset for any
+Permitted Use above.
+
+You may not distribute the Asset itself except as an 
+integrated component.
+
+
+

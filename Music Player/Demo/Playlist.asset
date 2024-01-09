@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 692e79da29c08b04d91c7e756dae776a, type: 3}
+  m_Name: Playlist
+  m_EditorClassIdentifier: 
+  Songs:
+  - Name: Song 1
+    Artist: Vowgan
+    Clip: {fileID: 8300000, guid: 2c7a3a2252f756942b292f84977e1f17, type: 3}
+    Icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  - Name: Song 2
+    Artist: Vowgan
+    Clip: {fileID: 8300000, guid: e31a2ba7b41a71646b40ece0ae558095, type: 3}
+    Icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  - Name: Song 1
+    Artist: Vowgan
+    Clip: {fileID: 8300000, guid: 2c7a3a2252f756942b292f84977e1f17, type: 3}
+    Icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  - Name: Song 2
+    Artist: Vowgan
+    Clip: {fileID: 8300000, guid: e31a2ba7b41a71646b40ece0ae558095, type: 3}
+    Icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}

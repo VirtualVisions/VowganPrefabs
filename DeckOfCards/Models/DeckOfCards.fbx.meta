@@ -1,0 +1,374 @@
+fileFormatVersion: 2
+guid: ba6c0128c3ecd1842845ab345fd6c2c4
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: 10th Of Clubs
+    100002: 10th Of Hearts
+    100004: 10th Of Spades
+    100006: 10th OfDiamonds
+    100008: 2nd Of Clubs
+    100010: 2nd Of Diamonds
+    100012: 2nd Of Hearts
+    100014: 2nd Of Spades
+    100016: 3rd Of Clubs
+    100018: 3rd Of Diamonds
+    100020: 3rd Of Hearts
+    100022: 3rd Of Spades
+    100024: 4th Of Clubs
+    100026: 4th Of Diamonds
+    100028: 4th Of Hearts
+    100030: 4th Of Spades
+    100032: 5th Of Clubs
+    100034: 5th Of Diamonds
+    100036: 5th Of Hearts
+    100038: 5th Of Spades
+    100040: 6th Of Clubs
+    100042: 6th Of Diamonds
+    100044: 6th Of Hearts
+    100046: 6th Of Spades
+    100048: 7th Of Clubs
+    100050: 7th Of Diamonds
+    100052: 7th Of Hearts
+    100054: 7th Of Spades
+    100056: 8th of Clubs
+    100058: 8th of Diamonds
+    100060: 8th of Hearts
+    100062: 8th of Spades
+    100064: 9th Of Clubs
+    100066: 9th Of Diamonds
+    100068: 9th Of Hearts
+    100070: 9th Of Spades
+    100072: Ace Of Clubs
+    100074: Ace Of Diamonds
+    100076: Ace Of Hearts
+    100078: Ace Of Spades
+    100080: Black Joker
+    100082: //RootNode
+    100084: Jack Of Clubs
+    100086: Jack Of Diamonds
+    100088: Jack Of Hearts
+    100090: Jack Of Spades
+    100092: King Of Clubs
+    100094: King Of Diamonds
+    100096: King Of Hearts
+    100098: King Of Spades
+    100100: Queen Of Clubs
+    100102: Queen Of Diamonds
+    100104: Queen Of Hearts
+    100106: Queen Of Spades
+    100108: Red Joker
+    100110: Deck
+    400000: 10th Of Clubs
+    400002: 10th Of Hearts
+    400004: 10th Of Spades
+    400006: 10th OfDiamonds
+    400008: 2nd Of Clubs
+    400010: 2nd Of Diamonds
+    400012: 2nd Of Hearts
+    400014: 2nd Of Spades
+    400016: 3rd Of Clubs
+    400018: 3rd Of Diamonds
+    400020: 3rd Of Hearts
+    400022: 3rd Of Spades
+    400024: 4th Of Clubs
+    400026: 4th Of Diamonds
+    400028: 4th Of Hearts
+    400030: 4th Of Spades
+    400032: 5th Of Clubs
+    400034: 5th Of Diamonds
+    400036: 5th Of Hearts
+    400038: 5th Of Spades
+    400040: 6th Of Clubs
+    400042: 6th Of Diamonds
+    400044: 6th Of Hearts
+    400046: 6th Of Spades
+    400048: 7th Of Clubs
+    400050: 7th Of Diamonds
+    400052: 7th Of Hearts
+    400054: 7th Of Spades
+    400056: 8th of Clubs
+    400058: 8th of Diamonds
+    400060: 8th of Hearts
+    400062: 8th of Spades
+    400064: 9th Of Clubs
+    400066: 9th Of Diamonds
+    400068: 9th Of Hearts
+    400070: 9th Of Spades
+    400072: Ace Of Clubs
+    400074: Ace Of Diamonds
+    400076: Ace Of Hearts
+    400078: Ace Of Spades
+    400080: Black Joker
+    400082: //RootNode
+    400084: Jack Of Clubs
+    400086: Jack Of Diamonds
+    400088: Jack Of Hearts
+    400090: Jack Of Spades
+    400092: King Of Clubs
+    400094: King Of Diamonds
+    400096: King Of Hearts
+    400098: King Of Spades
+    400100: Queen Of Clubs
+    400102: Queen Of Diamonds
+    400104: Queen Of Hearts
+    400106: Queen Of Spades
+    400108: Red Joker
+    400110: Deck
+    2100000: Card
+    2300000: 10th Of Clubs
+    2300002: 10th Of Hearts
+    2300004: 10th Of Spades
+    2300006: 10th OfDiamonds
+    2300008: 2nd Of Clubs
+    2300010: 2nd Of Diamonds
+    2300012: 2nd Of Hearts
+    2300014: 2nd Of Spades
+    2300016: 3rd Of Clubs
+    2300018: 3rd Of Diamonds
+    2300020: 3rd Of Hearts
+    2300022: 3rd Of Spades
+    2300024: 4th Of Clubs
+    2300026: 4th Of Diamonds
+    2300028: 4th Of Hearts
+    2300030: 4th Of Spades
+    2300032: 5th Of Clubs
+    2300034: 5th Of Diamonds
+    2300036: 5th Of Hearts
+    2300038: 5th Of Spades
+    2300040: 6th Of Clubs
+    2300042: 6th Of Diamonds
+    2300044: 6th Of Hearts
+    2300046: 6th Of Spades
+    2300048: 7th Of Clubs
+    2300050: 7th Of Diamonds
+    2300052: 7th Of Hearts
+    2300054: 7th Of Spades
+    2300056: 8th of Clubs
+    2300058: 8th of Diamonds
+    2300060: 8th of Hearts
+    2300062: 8th of Spades
+    2300064: 9th Of Clubs
+    2300066: 9th Of Diamonds
+    2300068: 9th Of Hearts
+    2300070: 9th Of Spades
+    2300072: Ace Of Clubs
+    2300074: Ace Of Diamonds
+    2300076: Ace Of Hearts
+    2300078: Ace Of Spades
+    2300080: Black Joker
+    2300082: Jack Of Clubs
+    2300084: Jack Of Diamonds
+    2300086: Jack Of Hearts
+    2300088: Jack Of Spades
+    2300090: King Of Clubs
+    2300092: King Of Diamonds
+    2300094: King Of Hearts
+    2300096: King Of Spades
+    2300098: Queen Of Clubs
+    2300100: Queen Of Diamonds
+    2300102: Queen Of Hearts
+    2300104: Queen Of Spades
+    2300106: Red Joker
+    2300108: Deck
+    3300000: 10th Of Clubs
+    3300002: 10th Of Hearts
+    3300004: 10th Of Spades
+    3300006: 10th OfDiamonds
+    3300008: 2nd Of Clubs
+    3300010: 2nd Of Diamonds
+    3300012: 2nd Of Hearts
+    3300014: 2nd Of Spades
+    3300016: 3rd Of Clubs
+    3300018: 3rd Of Diamonds
+    3300020: 3rd Of Hearts
+    3300022: 3rd Of Spades
+    3300024: 4th Of Clubs
+    3300026: 4th Of Diamonds
+    3300028: 4th Of Hearts
+    3300030: 4th Of Spades
+    3300032: 5th Of Clubs
+    3300034: 5th Of Diamonds
+    3300036: 5th Of Hearts
+    3300038: 5th Of Spades
+    3300040: 6th Of Clubs
+    3300042: 6th Of Diamonds
+    3300044: 6th Of Hearts
+    3300046: 6th Of Spades
+    3300048: 7th Of Clubs
+    3300050: 7th Of Diamonds
+    3300052: 7th Of Hearts
+    3300054: 7th Of Spades
+    3300056: 8th of Clubs
+    3300058: 8th of Diamonds
+    3300060: 8th of Hearts
+    3300062: 8th of Spades
+    3300064: 9th Of Clubs
+    3300066: 9th Of Diamonds
+    3300068: 9th Of Hearts
+    3300070: 9th Of Spades
+    3300072: Ace Of Clubs
+    3300074: Ace Of Diamonds
+    3300076: Ace Of Hearts
+    3300078: Ace Of Spades
+    3300080: Black Joker
+    3300082: Jack Of Clubs
+    3300084: Jack Of Diamonds
+    3300086: Jack Of Hearts
+    3300088: Jack Of Spades
+    3300090: King Of Clubs
+    3300092: King Of Diamonds
+    3300094: King Of Hearts
+    3300096: King Of Spades
+    3300098: Queen Of Clubs
+    3300100: Queen Of Diamonds
+    3300102: Queen Of Hearts
+    3300104: Queen Of Spades
+    3300106: Red Joker
+    3300108: Deck
+    4300000: Ace Of Clubs
+    4300002: 2nd Of Clubs
+    4300004: 3rd Of Clubs
+    4300006: 4th Of Clubs
+    4300008: 5th Of Clubs
+    4300010: 6th Of Clubs
+    4300012: 7th Of Clubs
+    4300014: 8th of Clubs
+    4300016: 9th Of Clubs
+    4300018: 10th Of Clubs
+    4300020: King Of Clubs
+    4300022: Jack Of Clubs
+    4300024: Queen Of Clubs
+    4300026: 2nd Of Diamonds
+    4300028: 3rd Of Diamonds
+    4300030: 4th Of Diamonds
+    4300032: 5th Of Diamonds
+    4300034: 6th Of Diamonds
+    4300036: 7th Of Diamonds
+    4300038: 8th of Diamonds
+    4300040: 9th Of Diamonds
+    4300042: 10th OfDiamonds
+    4300044: Ace Of Diamonds
+    4300046: Jack Of Diamonds
+    4300048: King Of Diamonds
+    4300050: Queen Of Diamonds
+    4300052: 10th Of Hearts
+    4300054: 2nd Of Hearts
+    4300056: 3rd Of Hearts
+    4300058: 4th Of Hearts
+    4300060: 5th Of Hearts
+    4300062: 6th Of Hearts
+    4300064: 7th Of Hearts
+    4300066: 8th of Hearts
+    4300068: 9th Of Hearts
+    4300070: Ace Of Hearts
+    4300072: Jack Of Hearts
+    4300074: King Of Hearts
+    4300076: Queen Of Hearts
+    4300078: 10th Of Spades
+    4300080: 2nd Of Spades
+    4300082: 3rd Of Spades
+    4300084: 4th Of Spades
+    4300086: 5th Of Spades
+    4300088: 6th Of Spades
+    4300090: 7th Of Spades
+    4300092: 8th of Spades
+    4300094: 9th Of Spades
+    4300096: Ace Of Spades
+    4300098: Jack Of Spades
+    4300100: King Of Spades
+    4300102: Queen Of Spades
+    4300104: Black Joker
+    4300106: Red Joker
+    4300108: Deck
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Card
+    second: {fileID: 2100000, guid: d5498c08063c350489b0eecbef24a28e, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
