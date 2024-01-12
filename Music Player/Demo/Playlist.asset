@@ -16,16 +16,16 @@ MonoBehaviour:
   - Name: Song 1
     Artist: Vowgan
     Clip: {fileID: 8300000, guid: 2c7a3a2252f756942b292f84977e1f17, type: 3}
-    Icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    Icon: {fileID: 21300000, guid: 9296abd40c7c1934cb668aae07b41c69, type: 3}
   - Name: Song 2
     Artist: Vowgan
     Clip: {fileID: 8300000, guid: e31a2ba7b41a71646b40ece0ae558095, type: 3}
-    Icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  - Name: Song 1
-    Artist: Vowgan
+    Icon: {fileID: 21300000, guid: e561d0406779ab948b7f155498d101ee, type: 3}
+  - Name: Song 3
+    Artist: Vowgan, but again!
     Clip: {fileID: 8300000, guid: 2c7a3a2252f756942b292f84977e1f17, type: 3}
-    Icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  - Name: Song 2
-    Artist: Vowgan
+    Icon: {fileID: 21300000, guid: 2886eb1248200a94d9eaec82336fbbad, type: 3}
+  - Name: Song 4
+    Artist: Vowgan once more
     Clip: {fileID: 8300000, guid: e31a2ba7b41a71646b40ece0ae558095, type: 3}
-    Icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+    Icon: {fileID: 21300000, guid: 644caf5607820c7418cf0d248b12f33b, type: 3}

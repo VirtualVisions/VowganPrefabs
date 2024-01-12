@@ -4,9 +4,19 @@ using TMPro;
 using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
+using VRC.SDKBase;
+using VRC.Udon;
 
 namespace Vowgan.Music
 {
+
+    public enum MusicPlaybackType
+    {
+        Normal,
+        RepeatAll,
+        RepeatOne,
+        Shuffle,
+    }
 
     public enum MusicPlayerState
     {
@@ -15,371 +25,319 @@ namespace Vowgan.Music
         PostSong,
     }
     
-    public enum PlaybackType
-    {
-        Normal,
-        RepeatAll,
-        RepeatOne,
-        Shuffle,
-    }
-    
-    
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class MusicPlayer : UdonSharpBehaviour
     {
         
-        public PlaybackType PlaybackType;
+        [Header("Options")]
         [MusicPlaylist] public UnityEngine.Object Playlist;
-        public float PostSongWait = 1;
+        public MusicPlaybackType PlaybackType;
         public bool PlayOnStart;
+        public float PostSongWait = 1;
+        [Range(0.01f, 1f)] public float VisualizerSmoothing = 0.35f;
+
+        [HideInInspector] public string[] SongNames;
+        [HideInInspector] public string[] SongArtists;
+        [HideInInspector] public AudioClip[] SongClips;
+        [HideInInspector] public Sprite[] SongIcons;
         
-        public string[] SongNames;
-        public string[] SongArtists;
-        public Sprite[] SongIcons;
-        public AudioClip[] SongClips;
+        [Header("Readout")]
+        public MusicPlayerState PlayerState;
+        public bool Paused;
+        public int SongIndex;
+        public float StateTimer;
+        public float LeaveStateTime;
         
         [Header("References")]
-        [Range(0.01f, 1f)] public float visualizerSmoothing = 0.35f;
-        public AudioSource source;
-        public Image wheelProgress;
-        public Image previewImage;
-        public TextMeshProUGUI textTime;
-        public TextMeshProUGUI textTitle;
-        public TextMeshProUGUI textArtist;
-        public Slider volumeSlider;
-        public Transform[] pulseVisuals;
-        public GameObject playButton;
-        public GameObject pauseButton;
-        public GameObject repeatOffButton;
-        public GameObject repeatOnButton;
-        public GameObject repeatOneButton;
-        public GameObject shuffleButton;
-        public GameObject muteButton;
-        public GameObject unmuteButton;
-
-        private int songIndex = 0;
-        private float[] audioSpectrum = new float[256];
-        private float songTime;
-        [SerializeField] private MusicPlayerState state = MusicPlayerState.Idle;
-        [SerializeField] private MusicPlayerState stateOld = MusicPlayerState.Idle;
-        private int findNonNullSongChecks;
-        private bool isPlaying;
-        private bool isPaused;
+        [SerializeField] private AudioSource Source;
+        [SerializeField] private  Transform[] PulseVisuals;
+        [SerializeField] private  Image WheelProgress;
+        [SerializeField] private  GameObject ButtonPlay;
+        [SerializeField] private  GameObject ButtonPause;
+        [SerializeField] private  GameObject ButtonRepeat;
+        [SerializeField] private  GameObject ButtonRepeatAll;
+        [SerializeField] private  GameObject ButtonRepeat1;
+        [SerializeField] private  GameObject ButtonShuffle;
+        [SerializeField] private  GameObject ButtonVolumeMute;
+        [SerializeField] private  GameObject ButtonVolumeUnmute;
+        [SerializeField] private  Image VolumeMute;
+        [SerializeField] private  Slider SliderVolume;
+        [SerializeField] private  Sprite Volume0;
+        [SerializeField] private  Sprite Volume1;
+        [SerializeField] private  Sprite Volume2;
+        [SerializeField] private  Image ImageIcon;
+        [SerializeField] private  TextMeshProUGUI TextSongName;
+        [SerializeField] private  TextMeshProUGUI TextArtistName;
+        
+        
+        private int songCount;
+        private readonly float[] audioSpectrum = new float[256];
 
 
         private void Start()
         {
-            _UpdateBannerTopRight();
-            _SetVolume();
-            _UnMute();
-            if (PlayOnStart) LoadNewSong();
+            songCount = SongClips.Length;
 
-            switch (PlaybackType)
+            SetPlayType(MusicPlaybackType.Normal);
+            
+            if (PlayOnStart)
             {
-                case PlaybackType.Normal:
-                    _PlaybackNormal();
+                _Play();
+            }
+        }
+
+        private void Update()
+        {
+            switch (PlayerState)
+            {
+                case MusicPlayerState.Idle:
                     break;
-                case PlaybackType.RepeatAll:
-                    _PlaybackRepeatAll();
+                case MusicPlayerState.Playing:
+                    if (Paused) break;
+                    UpdateVisuals();
+                    if (CheckTimer())
+                    {
+                        SetPlayerState(MusicPlayerState.PostSong);
+                    }
                     break;
-                case PlaybackType.RepeatOne:
-                    _PlaybackRepeatOne();
-                    break;
-                case PlaybackType.Shuffle:
-                    _PlaybackShuffle();
+                case MusicPlayerState.PostSong:
+                    if (CheckTimer())
+                    {
+                        ChooseNextSong();
+                        SetPlayerState(MusicPlayerState.Playing);
+                    }
+
                     break;
             }
         }
+
+        #region Controls
         
-        private void Update()
+        public void _Play()
         {
-            switch (state)
+            if (Paused)
             {
-                case MusicPlayerState.Idle:
-                    if (stateOld != state)
-                    {
-                        stateOld = state;
-                        isPaused = false;
-                        isPlaying = false;
-                        pauseButton.SetActive(false);
-                        playButton.SetActive(true);
-                    }
+                _Resume();
+            }
+            else
+            {
+                _Resume();
+                if (SongIndex == -1) SongIndex = 0;
+                SetPlayerState(MusicPlayerState.Playing);
+            }
+        }
+
+        public void _Pause()
+        {
+            Paused = true;
+            ButtonPlay.SetActive(true);
+            ButtonPause.SetActive(false);
+            Source.Pause();
+        }
+
+        public void _Resume()
+        {
+            Paused = false;
+            ButtonPlay.SetActive(false);
+            ButtonPause.SetActive(true);
+            Source.UnPause();
+        }
+
+        public void _SkipForward()
+        {
+            if (PlaybackType == MusicPlaybackType.RepeatOne) SongIndex++;
+            ChooseNextSong();
+            SetPlayerState(MusicPlayerState.Playing);
+        }
+
+        public void _SkipBackwards()
+        {
+            ChooseNextSong(true);
+            SetPlayerState(MusicPlayerState.Playing);
+        }
+
+        public void _Stop()
+        {
+            SetPlayerState(MusicPlayerState.Idle);
+        }
+
+        public void _Mute()
+        {
+            Source.volume = 0;
+            ButtonVolumeUnmute.SetActive(true);
+            ButtonVolumeMute.SetActive(false);
+        }
+
+        public void _Unmute()
+        {
+            Source.volume = SliderVolume.value;
+            ButtonVolumeUnmute.SetActive(false);
+            ButtonVolumeMute.SetActive(true);
+        }
+
+        public void _SetVolume()
+        {
+            Source.volume = SliderVolume.value;
+            if (Source.volume < 0.33f)
+            {
+                VolumeMute.sprite = Volume0;
+            }
+            else if (Source.volume < 0.66f)
+            {
+                VolumeMute.sprite = Volume1;
+            }
+            else if (Source.volume >= 0.66f)
+            {
+                VolumeMute.sprite = Volume2;
+            }
+        }
+
+        public void _SwitchPlaybackState()
+        {
+            MusicPlaybackType playbackType = MusicPlaybackType.Normal;
+            switch (PlaybackType)
+            {
+                case MusicPlaybackType.Normal:
+                    playbackType = MusicPlaybackType.RepeatAll;
                     break;
-                
-                case MusicPlayerState.Playing:
-                    if (stateOld != state)
+                case MusicPlaybackType.RepeatAll:
+                    playbackType = MusicPlaybackType.RepeatOne;
+                    break;
+                case MusicPlaybackType.RepeatOne:
+                    playbackType = MusicPlaybackType.Shuffle;
+                    break;
+                case MusicPlaybackType.Shuffle:
+                    playbackType = MusicPlaybackType.Normal;
+                    break;
+            }
+
+            SetPlayType(playbackType);
+        }
+
+        #endregion
+
+        private void ChooseNextSong(bool reverse = false)
+        {
+            switch (PlaybackType)
+            {
+                case MusicPlaybackType.Normal:
+                    if (reverse)
                     {
-                        stateOld = state;
-                        LoadNewSong();
-                    }
-                    
-                    if (isPaused)
-                    {
-                        
-                    }
-                    else if (!source.isPlaying)
-                    {
-                        state = MusicPlayerState.PostSong;
-                        isPaused = false;
-                        isPlaying = false;
+                        SongIndex--;
+                        if (SongIndex < 0) SongIndex = songCount - 1;
                     }
                     else
                     {
-                        UpdateVisuals();
+                        SongIndex++;
+                        if (SongIndex >= songCount) SongIndex = -1;
                     }
                     break;
-                
-                case MusicPlayerState.PostSong:
-                    if (stateOld != state)
+                case MusicPlaybackType.RepeatAll:
+                    if (reverse)
                     {
-                        stateOld = state;
-                        SendCustomEventDelayedSeconds(nameof(_LoadNext), PostSongWait);
+                        SongIndex--;
+                        if (SongIndex < 0) SongIndex = songCount - 1;
                     }
+                    else
+                    {
+                        SongIndex++;
+                        if (SongIndex >= songCount) SongIndex = 0;
+                    }
+                    break;
+                case MusicPlaybackType.RepeatOne:
+                    if (reverse)
+                    {
+                        if (SongIndex < 0) SongIndex = songCount - 1;
+                    }
+                    else
+                    {
+                        if (SongIndex >= songCount) SongIndex = 0;
+                    }
+                    break;
+                case MusicPlaybackType.Shuffle:
+                    SongIndex = UnityEngine.Random.Range(0, songCount);
                     break;
             }
         }
 
-        public void _LoadState0() => state = MusicPlayerState.Idle;
-        public void _LoadState1() => state = MusicPlayerState.Playing;
-        public void _LoadState2() => state = MusicPlayerState.PostSong;
-        
-        public void _UpdateBannerTopRight()
+        private void SetPlayType(MusicPlaybackType newPlayType)
         {
-            var currentTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.Local);
-            textTime.text = $"{currentTime:hh}:{currentTime.Minute} {currentTime:tt}";
-            SendCustomEventDelayedSeconds(nameof(_UpdateBannerTopRight), 60);
+            PlaybackType = newPlayType;
+            
+            ButtonRepeat.SetActive(PlaybackType == MusicPlaybackType.Normal);
+            ButtonRepeatAll.SetActive(PlaybackType == MusicPlaybackType.RepeatAll);
+            ButtonRepeat1.SetActive(PlaybackType == MusicPlaybackType.RepeatOne);
+            ButtonShuffle.SetActive(PlaybackType == MusicPlaybackType.Shuffle);
+        }
+
+        private void SetPlayerState(MusicPlayerState newState)
+        {
+            switch (newState)
+            {
+                case MusicPlayerState.Idle:
+                    Source.Stop();
+                    
+                    ButtonPlay.SetActive(true);
+                    ButtonPause.SetActive(false);
+                    
+                    SetProgressWheel(0);
+
+                    ImageIcon.color = new Color(17, 17, 17);
+                    ImageIcon.sprite = null;
+                    TextSongName.text = string.Empty;
+                    TextArtistName.text = string.Empty;
+                    break;
+                case MusicPlayerState.Playing:
+                    if (SongIndex == -1)
+                    {
+                        _Stop();
+                        return;
+                    }
+                    _Resume();
+                    
+                    AudioClip clip = SongClips[SongIndex];
+                    LeaveStateTime = clip.length;
+                    Source.clip = clip;
+                    Source.Play();
+                    
+                    ImageIcon.color = Color.white;
+                    ImageIcon.sprite = SongIcons[SongIndex];
+                    TextSongName.text = SongNames[SongIndex];
+                    TextArtistName.text = SongArtists[SongIndex];
+                    
+                    break;
+                case MusicPlayerState.PostSong:
+                    SetProgressWheel(1);
+                    LeaveStateTime = PostSongWait;
+                    break;
+            }
+
+            PlayerState = newState;
+            StateTimer = 0;
         }
         
         private void UpdateVisuals()
         {
-            songTime = source.time / source.clip.length;
-            wheelProgress.fillAmount = Mathf.Lerp(0.04f, 0.97f, songTime);
-            
-            source.GetSpectrumData(audioSpectrum, 0, FFTWindow.Rectangular);
-            for (int i = 0; i < pulseVisuals.Length; i++)
+            SetProgressWheel(StateTimer / LeaveStateTime);
+            Source.GetSpectrumData(audioSpectrum, 0, FFTWindow.Rectangular);
+            for (int i = 0; i < PulseVisuals.Length; i++)
             {
-                pulseVisuals[i].localScale = Vector3.Lerp(
-                    pulseVisuals[i].localScale,
+                PulseVisuals[i].localScale = Vector3.Lerp(
+                    PulseVisuals[i].localScale,
                     Vector3.Lerp(Vector3.one, Vector3.one * 1.2f, audioSpectrum[i + 1] * (i + 3)),
-                    visualizerSmoothing);
+                    VisualizerSmoothing);
             }
         }
 
-        /// <summary>
-        /// Plays the next song. Must be public so UI Buttons can access it.
-        /// </summary>
-        public void _PlayNext()
+        private void SetProgressWheel(float value)
         {
-            switch (SongClips.Length)
-            {
-                case 0:
-                    state = MusicPlayerState.Idle;
-                    break;
-                case 1:
-                    if (SongClips[0] == null)
-                    {
-                        state = MusicPlayerState.Idle;
-                    }
-                    else
-                    {
-                        songIndex += 1;
-                        LoadNewSong();
-                    }
-                    break;
-                default:
-                    songIndex += 1;
-                    LoadNewSong();
-                    break;
-            }
+            WheelProgress.fillAmount = Mathf.Lerp(0, 1, value);
         }
         
-        public void _LoadNext()
-        {
-            switch (PlaybackType)
-            {
-                case PlaybackType.Normal:
-                    songIndex += 1;
-                    if (songIndex < SongClips.Length)
-                    {
-                        LoadNewSong();
-                    }
-                    else
-                    {
-                        state = MusicPlayerState.Idle;
-                    }
-                    break;
-                
-                case PlaybackType.RepeatAll:
-                    if (songIndex >= SongClips.Length)
-                    {
-                        LoadNewSong();
-                    }
-                    else
-                    {
-                        songIndex += 1;
-                        LoadNewSong();
-                    }
-                    break;
-                
-                case PlaybackType.RepeatOne:
-                    LoadNewSong();
-                    break;
-                
-                case PlaybackType.Shuffle:
-                    var songOld = songIndex;
-                    songIndex = UnityEngine.Random.Range(0, SongClips.Length - 1);
-                    if (songIndex == songOld) songIndex++;
-                    LoadNewSong();
-                    break;
-            }
-        }
-        
-        /// <summary>
-        /// Plays the previous song. Must be public for UI buttons.
-        /// </summary>
-        public void _PlayLast()
-        {
-            songIndex -= 1;
-            if (songIndex < 0) songIndex = SongClips.Length - 1;
-            LoadNewSong();
-        }
-        
-        /// <summary>
-        /// Pauses the current playback. Must be public for UI buttons.
-        /// </summary>
-        public void _Pause()
-        {
-            source.Pause();
-            isPaused = true;
-            pauseButton.SetActive(false);
-            playButton.SetActive(true);
-        }
-        
-        /// <summary>
-        /// Resumes the current playback. Must be public for UI buttons.
-        /// </summary>
-        public void _Resume()
-        {
-            source.UnPause();
-            if (!isPaused)
-            {
-                LoadNewSong();
-            }
-            isPaused = false;
-            pauseButton.SetActive(true);
-            playButton.SetActive(false);
-        }
-
-        /// <summary>
-        /// Uses normal playback mode, so no repeats or shuffling. Must be public for UI buttons.
-        /// </summary>
-        public void _PlaybackNormal()
-        {
-            PlaybackType = PlaybackType.Normal;
-            repeatOffButton.SetActive(true);
-            repeatOnButton.SetActive(false);
-            repeatOneButton.SetActive(false);
-            shuffleButton.SetActive(false);
-        }
-
-        /// <summary>
-        /// Uses the Repeat All playback mode. Must be public for UI buttons.
-        /// </summary>
-        public void _PlaybackRepeatAll()
-        {
-            PlaybackType = PlaybackType.RepeatAll;
-            repeatOffButton.SetActive(false);
-            repeatOnButton.SetActive(true);
-            repeatOneButton.SetActive(false);
-            shuffleButton.SetActive(false);
-        }
-        /// <summary>
-        /// Uses the Repeat One playback mode. Must be public for UI buttons.
-        /// </summary>
-        public void _PlaybackRepeatOne()
-        {
-            PlaybackType = PlaybackType.RepeatOne;
-            repeatOffButton.SetActive(false);
-            repeatOnButton.SetActive(false);
-            repeatOneButton.SetActive(true);
-            shuffleButton.SetActive(false);
-        }
-        /// <summary>
-        /// Uses the Shuffle playback mode. Must be public for UI buttons.
-        /// </summary>
-        public void _PlaybackShuffle()
-        {
-            PlaybackType = PlaybackType.Shuffle;
-            repeatOffButton.SetActive(false);
-            repeatOnButton.SetActive(false);
-            repeatOneButton.SetActive(false);
-            shuffleButton.SetActive(true);
-        }
-
-        /// <summary>
-        /// Sets the audiosource volume to the value of the volume slider. Must be public for UI buttons.
-        /// </summary>
-        public void _SetVolume()
-        {
-            source.volume = volumeSlider.value;
-        }
-
-        /// <summary>
-        /// Mutes the current audio, but continues playback. Must be public for UI buttons.
-        /// </summary>
-        public void _Mute()
-        {
-            source.mute = true;
-            muteButton.SetActive(false);
-            unmuteButton.SetActive(true);
-        }
-
-        /// <summary>
-        /// UnMutes the current audio and continues playback. Must be public for UI buttons.
-        /// </summary>
-        public void _UnMute()
-        {
-            source.mute = false;
-            muteButton.SetActive(true);
-            unmuteButton.SetActive(false);
-        }
-        
-        private void LoadNewSong()
-        {
-            if (songIndex >= SongClips.Length) songIndex = 0;
-            if (songIndex != -1)
-            {
-                state = MusicPlayerState.PostSong;
-                if (SongClips[songIndex] != null)
-                {
-                    source.clip = SongClips[songIndex];
-                    previewImage.sprite = SongIcons[songIndex];
-                    textTitle.text = SongNames[songIndex];
-                    textArtist.text = SongArtists[songIndex];
-                    source.Play();
-                    pauseButton.SetActive(true);
-                    playButton.SetActive(false);
-                    isPaused = false;
-                    isPlaying = true;
-                }
-                else
-                {
-                    findNonNullSongChecks += 1;
-                    if (findNonNullSongChecks >= 10)
-                    {
-                        findNonNullSongChecks = 0;
-                        state = MusicPlayerState.Idle;
-                    }
-                    else
-                    {
-                        _PlayNext();
-                    }
-                }
-            }
-            else
-            {
-                state = MusicPlayerState.Idle;
-            }
+        private bool CheckTimer()
+        { 
+            StateTimer += Time.deltaTime; 
+            return StateTimer >= LeaveStateTime;
         }
         
     }

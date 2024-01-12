@@ -99,8 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: aed40528e03498b4487fe92d82edd91f,
     type: 2}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: 61d07f8030a086545872e861fb94a972,
-    type: 2}
+  m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -237,7 +236,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1334563533
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -826,7 +825,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8894fa7e4588a5c4fab98453e558847d, type: 3}
---- !u!1001 &1516729434435115128
+--- !u!1001 &4833358809801118150
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -834,6 +833,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 432314237972806348, guid: b810bf2df8c42d24d96aa60da5664b49,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 432314237972806348, guid: b810bf2df8c42d24d96aa60da5664b49,
+        type: 3}
     - target: {fileID: 1516729432435883557, guid: b810bf2df8c42d24d96aa60da5664b49,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -843,11 +848,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1516729433063326048, guid: b810bf2df8c42d24d96aa60da5664b49,
-        type: 3}
-      propertyPath: _syncMethod
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1516729433063326059, guid: b810bf2df8c42d24d96aa60da5664b49,
         type: 3}
@@ -892,7 +892,7 @@ PrefabInstance:
     - target: {fileID: 1516729433063326063, guid: b810bf2df8c42d24d96aa60da5664b49,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 2000
+      value: 1800
       objectReference: {fileID: 0}
     - target: {fileID: 1516729433063326063, guid: b810bf2df8c42d24d96aa60da5664b49,
         type: 3}
@@ -969,12 +969,6 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8129760776871440379, guid: b810bf2df8c42d24d96aa60da5664b49,
-        type: 3}
-      propertyPath: serializationData.Prefab
-      value: 
-      objectReference: {fileID: 8129760776871440379, guid: b810bf2df8c42d24d96aa60da5664b49,
-        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -990,6 +984,6 @@ SceneRoots:
   - {fileID: 1904927626}
   - {fileID: 1771931688}
   - {fileID: 1334563536}
-  - {fileID: 1516729434435115128}
+  - {fileID: 4833358809801118150}
   - {fileID: 1515125847}
   - {fileID: 1700875943}

@@ -25,16 +25,8 @@ namespace Vowgan.Contact.Gunshots
         protected override void _Init()
         {
             base._Init();
-            
-            MaterialIds = new int[Materials.Length][];
-            for (int x = 0; x < MaterialIds.Length; x++)
-            {
-                MaterialIds[x] = new int[Materials[x].Length];
-                for (int y = 0; y < Materials[x].Length; y++)
-                {
-                    MaterialIds[x][y] = Materials[x][y].GetInstanceID();
-                }
-            }
+
+            MaterialIds = ContactUtilities.CaptureMaterialIds(Materials);
         }
         
         public override void OnPickupUseDown()

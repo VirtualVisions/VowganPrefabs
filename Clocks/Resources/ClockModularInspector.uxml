@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:IMGUIContainer name="UdonSharpHeader" />
+    <uie:PropertyField name="FieldUse24HourTime" />
+    <ui:VisualElement name="AudioTickContainer" style="flex-grow: 0; flex-direction: row;">
+        <uie:PropertyField name="FieldUseAudioTick" />
+        <uie:PropertyField name="FieldAudioClip" style="flex-grow: 1;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="TimezoneContainer" style="flex-grow: 0; flex-direction: row;">
+        <uie:PropertyField name="FieldUseLocalTimezone" />
+        <ui:DropdownField index="-1" choices="System.Collections.Generic.List`1[System.String]" name="DropdownTimezone" style="flex-grow: 1;" />
+    </ui:VisualElement>
+    <ui:ListView focusable="true" reorderable="true" show-foldout-header="true" header-title="Hands" name="ListViewHands" show-add-remove-footer="true" reorder-mode="Animated" show-border="true" />
+    <ui:ListView focusable="true" reorderable="true" show-foldout-header="true" header-title="Image Fills" name="ListViewImageFills" show-add-remove-footer="true" reorder-mode="Animated" show-border="true" />
+    <ui:ListView focusable="true" reorderable="true" show-foldout-header="true" header-title="Labels" name="ListViewLabels" show-border="true" show-add-remove-footer="true" reorder-mode="Animated" />
+</ui:UXML>

@@ -45,15 +45,7 @@ namespace Vowgan.Contact.Footsteps
             base._Init();
             localPlayer = Networking.LocalPlayer;
 
-            MaterialIds = new int[Materials.Length][];
-            for (int x = 0; x < MaterialIds.Length; x++)
-            {
-                MaterialIds[x] = new int[Materials[x].Length];
-                for (int y = 0; y < Materials[x].Length; y++)
-                {
-                    MaterialIds[x][y] = Materials[x][y].GetInstanceID();
-                }
-            }
+            MaterialIds = ContactUtilities.CaptureMaterialIds(Materials);
         }
 
         private void Update()
