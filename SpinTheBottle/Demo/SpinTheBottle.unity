@@ -253,7 +253,7 @@ ReflectionProbe:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IntensityMultiplier: 1
+  m_IntensityMultiplier: 2
   m_BlendDistance: 1
   m_HDR: 1
   m_BoxProjection: 1
@@ -949,8 +949,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2015300372}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.41958043, y: -0.20882384, z: 0.09886184, w: 0.87782186}
-  m_LocalPosition: {x: 0.1192, y: 1.3734, z: -0.2598}
+  m_LocalRotation: {x: 0.7071067, y: -0.000000074505806, z: 0.000000044703484, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 1.5771406, z: 0.007023509}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
