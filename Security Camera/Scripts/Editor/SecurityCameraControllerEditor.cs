@@ -15,7 +15,6 @@ namespace Vowgan
         
         private SecurityCameraController script;
         private Texture2D banner;
-        private ReorderableList cameraList;
         
         private SerializedProperty propCameras;
         private SerializedProperty propRenderCamera;
@@ -36,22 +35,6 @@ namespace Vowgan
             propCameraNameText = serializedObject.FindProperty(nameof(SecurityCameraController.CameraNameText));
             
             banner = Resources.Load<Texture2D>("VV_SecurityCameraController");
-            
-            cameraList = new ReorderableList(serializedObject, propCameras)
-            {
-                drawHeaderCallback = DrawHeaderCallback,
-                drawElementCallback = DrawElementCallback,
-            };
-        }
-        
-        private void DrawHeaderCallback(Rect rect)
-        {
-            EditorGUI.LabelField(rect, "Cameras");
-        }
-        
-        private void DrawElementCallback(Rect rect, int index, bool isActive, bool isFocused)
-        {
-            EditorGUI.ObjectField(rect, propCameras.GetArrayElementAtIndex(index), GUIContent.none);
         }
         
         public override void OnInspectorGUI()
@@ -67,8 +50,7 @@ namespace Vowgan
             
             GUILayout.Space(10);
             
-            cameraList.DoLayoutList();
-            serializedObject.ApplyModifiedProperties();
+            EditorGUILayout.PropertyField(propCameras);
 
             StartArea("References");
             EditorGUILayout.PropertyField(propRenderCamera);

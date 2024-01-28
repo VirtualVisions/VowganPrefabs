@@ -1,214 +1,274 @@
 ﻿
 using System;
+using JetBrains.Annotations;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDK3.Components;
 using VRC.SDKBase;
 using VRC.Udon;
+using VRC.Udon.Common;
 using VRC.Udon.Common.Interfaces;
 
 namespace Vowgan
 {
+
+    public enum VRoombaState
+    {
+        Idle,
+        Active,
+        Righting,
+    }
+
+    public enum VRoombaTurnState
+    {
+        None,
+        Left,
+        Right,
+    }
+    
     public class VRoomba : UdonSharpBehaviour
     {
+
+        [UdonSynced] public VRoombaState State;
+        public VRoombaTurnState TurnState;
         
-        public float moveSpeed = 0.5f;
-        public float turnSpeed = 1f;
-        public float decisionDelay = 0.2f;
-        public float painThreshold = 1.0f;
-        [UdonSynced] public bool isMoving;
-        public bool isTurningLeft;
-        public bool isTurningRight;
-        public AudioClip clipBonk;
-        public AudioSource sourceEffects;
+        public float MoveSpeed = 0.5f;
+        public float TurnSpeed = 1f;
+        public float DecisionDelay = 0.2f;
+        public float PainThreshold = 1.0f;
+        public float UprightThreshold = 0.4f;
+        
+        public AudioSource SourceEffects;
+        public AudioClip[] ClipsBonk;
+        public VRoombaSensor SensorLeft;
+        public VRoombaSensor SensorRight;
         
         [Header("Vocals")] 
-        public bool useVocals = true;
-        public AudioClip[] clipsCollide;
-        public AudioClip[] clipsEat;
-        public AudioClip[] clipsFallen;
-        public AudioClip[] clipsGrabAccept;
-        public AudioClip[] clipsGrabDecline;
-        
+        public bool UseVoice = true;
+        public AudioClip[] VoiceCollide;
+        public AudioClip[] VoiceEat;
+        public AudioClip[] VoiceFallen;
+        public AudioClip[] VoiceGrabAccept;
+        public AudioClip[] VoiceGrabDecline;
+
+        private VRCPlayerApi localPlayer;
         private Rigidbody rb;
         private Animator anim;
         private VRCPickup pickup;
-        private float decisionTarget;
         private float baseMoveSpeed;
-        private float nextVocalBus;
-        private float nextImpactBus;
-        private bool queueLeft;
-        private bool queueRight;
-        private bool upright;
-        private bool isRighting;
+        private float nextVocalTime;
+        private float nextImpactTime;
+        private float nextTurnCheckTime;
         private int speedIncreaseCount;
+        private bool upright;
+        private bool isOwner;
         
-        private int hashRight;
-        private int hashActive;
+        private int hashState;
 
 
         private void Start()
         {
+            localPlayer = Networking.LocalPlayer;
+            
             rb = GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();
             pickup = GetComponent<VRCPickup>();
 
-            baseMoveSpeed = moveSpeed;
+            baseMoveSpeed = MoveSpeed;
             
-            hashRight = Animator.StringToHash("Right");
-            hashActive = Animator.StringToHash("Active");
-            
-            anim.SetBool(hashActive, isMoving);
-        }
-        
-        private void Update()
-        {
-            if (!isMoving || isRighting || pickup.IsHeld) return;
-            
-            upright = Vector3.Dot(transform.up, Vector3.up) > 0.4f;
+            hashState = Animator.StringToHash("State");
 
-            if (upright)
+            OnDeserialization();
+        }
+
+        public override void OnDeserialization()
+        {
+            anim.SetInteger(hashState, (int)State);
+        }
+
+        private void FixedUpdate()
+        {
+            isOwner = localPlayer.IsOwner(gameObject);
+            if (!isOwner) return;
+            
+            if (pickup.IsHeld) return;
+            
+            switch (State)
             {
-                HandleMovement();
-            }
-            else
-            {
-                SendCustomNetworkEvent(NetworkEventTarget.All, nameof(NetworkUpright));
+                case VRoombaState.Idle:
+                    break;
+                case VRoombaState.Active:
+                    upright = Vector3.Dot(transform.up, Vector3.up) > UprightThreshold;
+                    if (!upright)
+                    {
+                        State = VRoombaState.Righting;
+                        SendCustomNetworkEvent(NetworkEventTarget.All, nameof(PlayClipsFallen));
+                        OnDeserialization();
+                    }
+                    HandleMovement();
+                    break;
+                case VRoombaState.Righting:
+                    break;
             }
         }
-        
+
         private void OnCollisionEnter(Collision other)
         {
-            if (!Utilities.IsValid(other.gameObject) || !isMoving || isRighting) return;
+            if (!isOwner) return;
+            if (State != VRoombaState.Active) return;
+            if (!Utilities.IsValid(other.gameObject)) return;
             
-            if (!other.transform.GetComponent<VRoomba>())
+            VRCObjectSync objectSync = other.gameObject.GetComponent<VRCObjectSync>();
+            if (objectSync)
             {
-                VRCObjectSync objectSync = (VRCObjectSync) other.transform.GetComponent(typeof(VRCObjectSync));
-                if (Utilities.IsValid(objectSync))
+                if (!other.gameObject.GetComponent<VRoomba>())
                 {
+                    Networking.SetOwner(localPlayer, objectSync.gameObject);
                     objectSync.Respawn();
-                    if (useVocals) SendCustomNetworkEvent(NetworkEventTarget.All, nameof(PlayClipsEat));
-                    moveSpeed = baseMoveSpeed * 2;
+                    if (UseVoice) SendCustomNetworkEvent(NetworkEventTarget.All, nameof(PlayClipsEat));
+                    MoveSpeed = baseMoveSpeed * 2;
                     speedIncreaseCount += 1;
                     SendCustomEventDelayedSeconds(nameof(EndSpeed), 5);
                 }
             }
             
-            if (Time.timeSinceLevelLoad < nextImpactBus) return;
-            nextImpactBus = Time.timeSinceLevelLoad + 2;
+            if (Time.timeSinceLevelLoad < nextImpactTime) return;
+            nextImpactTime = Time.timeSinceLevelLoad + 2;
             
             float impact = other.relativeVelocity.magnitude;
+
             if (impact > 0.01f)
             {
-                sourceEffects.PlayOneShot(clipBonk);
-                if (isMoving && impact > painThreshold && useVocals)
+                if (impact > PainThreshold && UseVoice)
                 {
                     SendCustomNetworkEvent(NetworkEventTarget.All, nameof(PlayClipsCollide));
+                }
+                else
+                {
+                    SendCustomNetworkEvent(NetworkEventTarget.All, nameof(PlayClipsBonk));
                 }
             }
         }
 
         public override void OnPickup()
         {
-            if (!isMoving || !useVocals) return;
-            if (Time.timeSinceLevelLoad < nextVocalBus) return;
-            
-            if (upright)
+            if (!UseVoice) return;
+            if (Time.timeSinceLevelLoad < nextVocalTime) return;
+
+            switch (State)
             {
-                SendCustomNetworkEvent(NetworkEventTarget.All, nameof(PlayClipsGrabDecline));
-            }
-            else
-            {
-                SendCustomNetworkEvent(NetworkEventTarget.All, nameof(PlayClipsGrabAccept));
+                case VRoombaState.Idle:
+                    break;
+                case VRoombaState.Active:
+                    SendCustomNetworkEvent(NetworkEventTarget.All, nameof(PlayClipsGrabDecline));
+                    break;
+                case VRoombaState.Righting:
+                    SendCustomNetworkEvent(NetworkEventTarget.All, nameof(PlayClipsGrabAccept));
+                    break;
             }
         }
         
         public override void OnPickupUseDown()
         {
-            isMoving = !isMoving;
-            anim.SetBool(hashActive, isMoving);
+            State = (State == VRoombaState.Idle) ? VRoombaState.Active : VRoombaState.Idle;
+            OnDeserialization();
         }
         
         private void HandleMovement()
         {
-            if (!(queueLeft && queueRight)) MoveForward();
-            
-            if (Time.time >= decisionTarget)
+            upright = Vector3.Dot(transform.up, Vector3.up) > UprightThreshold;
+
+            if (Time.timeSinceLevelLoad >= nextTurnCheckTime)
             {
-                decisionTarget = Time.time + decisionDelay;
-                if (isTurningLeft)
+                nextTurnCheckTime = Time.timeSinceLevelLoad + DecisionDelay;
+
+                bool leftSensor = SensorLeft.Active;
+                bool rightSensor = SensorRight.Active;
+
+                if (leftSensor || rightSensor)
                 {
-                    queueLeft = true;
-                    queueRight = false;
-                } 
-                else if (isTurningRight)
-                {
-                    queueLeft = false;
-                    queueRight = true;
+                    if (TurnState == VRoombaTurnState.None)
+                    {
+                        if (leftSensor && rightSensor)
+                        {
+                            TurnState = SensorLeft.CollisionTime < SensorRight.CollisionTime
+                                ? VRoombaTurnState.Left
+                                : VRoombaTurnState.Right;
+                        }
+                        else if (leftSensor)
+                        {
+                            TurnState = VRoombaTurnState.Left;
+                        }
+                        else if (rightSensor)
+                        {
+                            TurnState = VRoombaTurnState.Right;
+                        }
+                    }
                 }
                 else
                 {
-                    queueLeft = false;
-                    queueRight = false;
+                    TurnState = VRoombaTurnState.None;
                 }
             }
             
-            if (queueLeft)
+            MoveForward();
+            switch (TurnState)
             {
-                TurnLeft();
+                case VRoombaTurnState.None:
+                    break;
+                case VRoombaTurnState.Left:
+                    TurnLeft();
+                    break;
+                case VRoombaTurnState.Right:
+                    TurnRight();
+                    break;
             }
-            else if (queueRight)
-            {
-                TurnRight();
-            }
-        }
-        
-        public void NetworkUpright()
-        {
-            isRighting = true;
-            anim.SetTrigger(hashRight);
-            if (useVocals) PlayClipsFallen();
         }
         
         private void TurnLeft()
         {
-            Quaternion rotMovement = Quaternion.Euler(transform.up * turnSpeed);
+            Quaternion rotMovement = Quaternion.Euler(transform.up * TurnSpeed);
             rb.MoveRotation(rb.rotation * rotMovement);
         }
         private void TurnRight()
         {
-            Quaternion rotMovement = Quaternion.Euler(-transform.up * turnSpeed);
+            Quaternion rotMovement = Quaternion.Euler(-transform.up * TurnSpeed);
             rb.MoveRotation(rb.rotation * rotMovement);
         }
         private void MoveForward()
         {
-            rb.MovePosition(rb.position + transform.forward * (Time.deltaTime * moveSpeed));
+            rb.MovePosition(rb.position + transform.forward * (Time.deltaTime * MoveSpeed));
         }
         public void EndSpeed()
         {
             speedIncreaseCount -= 1;
-            if (speedIncreaseCount <= 0) moveSpeed = baseMoveSpeed;
-        }
-        public void DoneRighting() // Called via Animations...
-        {
-            isRighting = false;
-            if (isTurningLeft && isTurningRight) isTurningLeft = false;
+            if (speedIncreaseCount <= 0) MoveSpeed = baseMoveSpeed;
         }
         
-        public void PlayClipsCollide() { PlayVoice(clipsCollide); }
-        public void PlayClipsEat() { PlayVoice(clipsEat); }
-        public void PlayClipsFallen() { PlayVoice(clipsFallen); }
-        public void PlayClipsGrabAccept() { PlayVoice(clipsGrabAccept); }
-        public void PlayClipsGrabDecline() { PlayVoice(clipsGrabDecline); }
-        private void PlayVoice(AudioClip[] clips)
+        [UsedImplicitly]
+        public void DoneRighting() // Called via Animations...
         {
-            if (Time.timeSinceLevelLoad < nextVocalBus) return;
-            AudioClip clip = clips[UnityEngine.Random.Range(0, clips.Length)];
-            if (clip)
-            {
-                sourceEffects.PlayOneShot(clip);
-                nextVocalBus = Time.timeSinceLevelLoad + clip.length * 2;
-            }
+            TurnState = VRoombaTurnState.None;
+            if (!isOwner) return;
+            
+            State = VRoombaState.Active;
+            OnDeserialization();
+        }
+        
+        public void PlayClipsCollide() => PlayClip(VoiceCollide);
+        public void PlayClipsEat() => PlayClip(VoiceEat);
+        public void PlayClipsBonk() => PlayClip(ClipsBonk);
+        public void PlayClipsFallen() => PlayClip(VoiceFallen);
+        public void PlayClipsGrabAccept() => PlayClip(VoiceGrabAccept);
+        public void PlayClipsGrabDecline() => PlayClip(VoiceGrabDecline);
+        private void PlayClip(AudioClip[] voiceClips)
+        {
+            if (Time.timeSinceLevelLoad < nextVocalTime) return;
+            AudioClip clip = voiceClips[UnityEngine.Random.Range(0, voiceClips.Length)];
+            if (!clip) return;
+            
+            SourceEffects.PlayOneShot(clip);
+            nextVocalTime = Time.timeSinceLevelLoad + clip.length * 2;
         }
     }
 }

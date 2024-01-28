@@ -32,9 +32,6 @@ namespace Vowgan
         private VRCPlayerApi playerLocal;
         private Camera renderCam;
         
-        private const byte STATE_IDLE = 0;
-        private const byte STATE_FORWARD = 1;
-        
         
         private void Start()
         {

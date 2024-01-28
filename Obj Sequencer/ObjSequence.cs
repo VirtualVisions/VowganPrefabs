@@ -10,9 +10,9 @@ namespace VowganVR
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
     public class ObjSequence : UdonSharpBehaviour
     {
-    
+
         [Tooltip("Determine whether or not the Obj Sequence should be running.")]
-        public bool Animating;
+        public bool Animating = true;
         [Tooltip("Whether or not the sequence should continue to animate past the last value.")]
         public bool Loop = true;
         [Tooltip("Whether to play the sequence in reverse.")]
@@ -25,17 +25,19 @@ namespace VowganVR
         public GameObject[] SequenceObjects;
         [Tooltip("Materials used when swapping between sequences.")]
         public Material[] Materials;
+        [Tooltip("Target mesh renderer.")]
+        public MeshRenderer Renderer;
         
         private Mesh[] meshes;
         private MeshFilter filter;
-        private MeshRenderer rend;
         private int index;
         private float timer;
-    
+        
+        
         private void Start()
         {
-            filter = GetComponent<MeshFilter>();
-            rend = GetComponent<MeshRenderer>();
+            filter = Renderer.GetComponent<MeshFilter>();
+            Debug.Log($"Filter: {filter}");
             
             meshes = new Mesh[SequenceObjects.Length];
             for (int i = 0; i < meshes.Length; i++)
@@ -44,7 +46,6 @@ namespace VowganVR
             }
             ApplyIndex();
         }
-        
         
         private void Update()
         {
@@ -115,7 +116,7 @@ namespace VowganVR
             filter.sharedMesh = meshes[index];
             if (UseCustomMaterials)
             {
-                rend.sharedMaterial = Materials[index];
+                Renderer.sharedMaterial = Materials[index];
             }
         }
         
