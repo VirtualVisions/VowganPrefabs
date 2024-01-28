@@ -1,0 +1,24 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:VisualElement style="flex-direction: row; -unity-text-align: middle-left;">
+        <ui:VisualElement style="flex-grow: 1; width: 50%;">
+            <ui:VisualElement name="NameContainer" style="flex-grow: 1; flex-direction: row;">
+                <ui:Label tabindex="-1" text="Name" parse-escape-sequences="true" display-tooltip-when-elided="true" style="width: 40px;" />
+                <ui:TextField picking-mode="Ignore" value="filler text" binding-path="Name" style="flex-grow: 1;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="ClipContainer" style="flex-grow: 1; flex-direction: row;">
+                <ui:Label tabindex="-1" text="Clip" parse-escape-sequences="true" display-tooltip-when-elided="true" style="width: 40px;" />
+                <uie:ObjectField binding-path="Clip" style="flex-grow: 1;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; width: 50%;">
+            <ui:VisualElement name="ArtistContainer" style="flex-grow: 1; flex-direction: row;">
+                <ui:Label tabindex="-1" text="Artist" parse-escape-sequences="true" display-tooltip-when-elided="true" style="width: 40px; margin-left: 6px;" />
+                <ui:TextField picking-mode="Ignore" value="filler text" binding-path="Artist" style="flex-grow: 1;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="IconContainer" style="flex-grow: 1; flex-direction: row;">
+                <ui:Label tabindex="-1" text="Icon" parse-escape-sequences="true" display-tooltip-when-elided="true" style="width: 40px; margin-left: 6px;" />
+                <uie:ObjectField binding-path="Icon" style="flex-grow: 1;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -34,6 +34,7 @@ namespace Vowgan.Music
         public MusicPlaybackType PlaybackType;
         public bool PlayOnStart;
         public float PostSongWait = 1;
+        public float VisualizerMultiplier = 1.5f;
         [Range(0.01f, 1f)] public float VisualizerSmoothing = 0.35f;
 
         [HideInInspector] public string[] SongNames;
@@ -42,11 +43,12 @@ namespace Vowgan.Music
         [HideInInspector] public Sprite[] SongIcons;
         
         [Header("Readout")]
-        public MusicPlayerState PlayerState;
-        public bool Paused;
-        public int SongIndex;
-        public float StateTimer;
-        public float LeaveStateTime;
+        [SerializeField] private MusicPlayerState PlayerState;
+        [SerializeField] private bool Paused;
+        [SerializeField] private bool Muted;
+        [SerializeField] private int SongIndex;
+        [SerializeField] private float StateTimer;
+        [SerializeField] private float LeaveStateTime;
         
         [Header("References")]
         [SerializeField] private AudioSource Source;
@@ -163,6 +165,7 @@ namespace Vowgan.Music
 
         public void _Mute()
         {
+            Muted = true;
             Source.volume = 0;
             ButtonVolumeUnmute.SetActive(true);
             ButtonVolumeMute.SetActive(false);
@@ -170,6 +173,7 @@ namespace Vowgan.Music
 
         public void _Unmute()
         {
+            Muted = false;
             Source.volume = SliderVolume.value;
             ButtonVolumeUnmute.SetActive(false);
             ButtonVolumeMute.SetActive(true);
@@ -177,6 +181,7 @@ namespace Vowgan.Music
 
         public void _SetVolume()
         {
+            if (Muted) _Unmute();
             Source.volume = SliderVolume.value;
             if (Source.volume < 0.33f)
             {
@@ -324,7 +329,7 @@ namespace Vowgan.Music
             {
                 PulseVisuals[i].localScale = Vector3.Lerp(
                     PulseVisuals[i].localScale,
-                    Vector3.Lerp(Vector3.one, Vector3.one * 1.2f, audioSpectrum[i + 1] * (i + 3)),
+                    Vector3.Lerp(Vector3.one, Vector3.one * VisualizerMultiplier, audioSpectrum[i + 1] * (i + 3)),
                     VisualizerSmoothing);
             }
         }
