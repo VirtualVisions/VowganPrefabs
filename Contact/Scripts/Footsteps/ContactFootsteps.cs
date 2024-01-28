@@ -104,8 +104,7 @@ namespace Vowgan.Contact.Footsteps
             ContactAudio._PlaySound(
                 clips,
                 localPlayer.GetPosition(),
-                ContactAudioPlayer.DEFAULT_MAX_DISTANCE,
-                VolumeCurve.Evaluate(lastPlayerVelocityMagnitude));
+                volume: VolumeCurve.Evaluate(lastPlayerVelocityMagnitude));
         }
 
         private void PlayJumping()
@@ -117,8 +116,7 @@ namespace Vowgan.Contact.Footsteps
             ContactAudio._PlaySound(
                 clips,
                 localPlayer.GetPosition(),
-                ContactAudioPlayer.DEFAULT_MAX_DISTANCE,
-                VolumeCurve.Evaluate(lastPlayerVelocityMagnitude));
+                volume: VolumeCurve.Evaluate(lastPlayerVelocityMagnitude));
         }
 
         private void PlayLanding()

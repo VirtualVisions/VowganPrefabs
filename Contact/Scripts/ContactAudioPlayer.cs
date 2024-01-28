@@ -15,166 +15,78 @@ namespace Vowgan.Contact
         public GameObject AudioPrefab;
         public int SourceCount = 64;
 
-        [HideInInspector] public AudioSource[] AudioSourceList;
-        [HideInInspector] public GameObject[] GameObjectList;
-        [HideInInspector] public Transform[] TransformList;
-        [HideInInspector] public DataList AudioList = new DataList();
+        [HideInInspector] public ContactInstance[] Instances;
 
         private VRCPlayerApi localPlayer;
         private int lastPlayedIndex = -1;
         
-        public const string INDEX = "Index";
-        public const string IS_PLAYING = "IsPlaying";
-        public const string IS_CHILDED = "IsChilded";
-        public const string START_TIME = "StartTime";
-        public const string CLIP_LENGTH = "ClipLength";
-
-        public const float DEFAULT_MAX_DISTANCE = 32;
-
-        private bool initialized;
-
-
-        private void Start()
-        {
-            if (!initialized) _Init();
-        }
-
-        private void _Init()
-        {
-            initialized = true;
-            
-            localPlayer = Networking.LocalPlayer;
-            
-            for (int i = 0; i < AudioSourceList.Length; i++)
-            {
-                DataDictionary data = new DataDictionary();
-
-                data[INDEX] = i;
-                data[IS_PLAYING] = false;
-                data[IS_CHILDED] = false;
-                data[START_TIME] = 0;
-                data[CLIP_LENGTH] = 0;
-                
-                GameObjectList[i].SetActive(false);
-                AudioList.Add(data);
-            }
-        }
 
         private void Update()
         {
-            for (int i = 0; i < AudioList.Count; i++)
+            for (int i = 0; i < Instances.Length; i++)
             {
-                DataDictionary instance = AudioList[i].DataDictionary;
-                if (instance[IS_PLAYING].Boolean == false) continue;
+                ContactInstance instance = Instances[i];
+                if (!instance.IsPlaying) continue;
 
-                float clipTime = Time.timeSinceLevelLoad - instance[START_TIME].Float;
+                float instanceTime = Time.timeSinceLevelLoad - instance.StartTime;
                 
-                if (clipTime >= instance[CLIP_LENGTH].Float)
+                if (instanceTime >= instance.ClipLength)
                 {
-                    _ReturnSource(instance);
+                    instance._ReturnToPool();
                 }
             }
         }
-
-        public DataDictionary _PlaySoundChilded(AudioClip clip, Transform parent, Vector3 position, float maxDistance = DEFAULT_MAX_DISTANCE, float volume = 1, float pitch = 1)
+        
+        public ContactInstance _PlaySoundChilded(AudioClip clip, Transform parent, Vector3 position, float maxDistance = 32, float volume = 1, float pitch = 1)
         {
-            DataDictionary instance = _PlaySound(clip, position, maxDistance, volume, pitch);
-            if (instance != null)
-            {
-                int index = instance[INDEX].Int;
-                instance[IS_CHILDED] = true;
-                TransformList[index].parent = parent;
-            }
+            ContactInstance instance = TryGetSource();
+            if (instance == null) return null;
+            
+            instance._ChildTo(parent);
+            instance._PlaySound(clip, position, maxDistance, volume, pitch);
+            
             return instance;
         }
         
-        public DataDictionary _PlaySound(AudioClip[] clips, Vector3 position, float maxDistance = DEFAULT_MAX_DISTANCE, float volume = 1, float pitch = 1)
+        public ContactInstance _PlaySound(AudioClip[] clips, Vector3 position, float maxDistance = 32, float volume = 1, float pitch = 1)
         {
-            if (clips == null || clips.Length == 0)
-            {
-                _Log("Clip array length is 0, unable to play a new clip.");
-                return null;
-            }
+            if (clips == null || clips.Length == 0) return null;
+            AudioClip clip = clips[UnityEngine.Random.Range(0, clips.Length)];
             
-            DataDictionary instance = _PlaySound(clips[UnityEngine.Random.Range(0, clips.Length)], position, maxDistance, volume, pitch);
+            ContactInstance instance = _PlaySound(clip, position, maxDistance, volume, pitch);
             return instance;
         }
-
-        public void _ReturnSource(DataDictionary instance)
-        {
-            instance[IS_PLAYING] = false;
-            instance[START_TIME] = 0;
-            instance[CLIP_LENGTH] = 0;
-
-            int index = instance[INDEX].Int;
-
-            if (instance[IS_CHILDED].Boolean)
-            {
-                instance[IS_CHILDED] = false;
-                TransformList[index].SetParent(transform);
-                TransformList[index].SetSiblingIndex(index);
-            }
-
-            GameObjectList[index].SetActive(false);
-        }
         
-        public DataDictionary _PlaySound(AudioClip clip, Vector3 position, float maxDistance = DEFAULT_MAX_DISTANCE, float volume = 1, float pitch = 1)
+        public ContactInstance _PlaySound(AudioClip clip, Vector3 position, float maxDistance = 32, float volume = 1, float pitch = 1)
         {
-            if (!initialized) _Init();
-            
-            DataDictionary instance = TryGetSource();
-            
             if (clip == null)
             {
                 _Log("Tried to play null clip.");
-                return instance;
+                return null;
             }
             
-            if (instance != null)
+            ContactInstance instance = TryGetSource();
+            if (instance == null) return null;
+            
+            if (instance._PlaySound(clip, position, maxDistance, volume, pitch))
             {
-                if (Vector3.Distance(localPlayer.GetPosition(), position) > maxDistance)
-                {
-                    _Log("Target position is out of range.");
-                    return instance;
-                }
-                
-                instance[IS_PLAYING] = true;
-                instance[START_TIME] = Time.timeSinceLevelLoad;
-                
-                if (clip == null)
-                {
-                    _Log("Tried to play null clip.");
-                }
-                else
-                {
-                    instance[CLIP_LENGTH] = clip.length;
-                }
-
-
-                int index = instance[INDEX].Int;
-
-                AudioSource source = AudioSourceList[index];
-                source.clip = clip;
-                source.maxDistance = maxDistance;
-                source.volume = volume;
-                source.pitch = pitch;
-                
-                GameObjectList[index].SetActive(true);
-                TransformList[index].position = position;
+                return instance;
             }
-
-            return instance;
+            else
+            {
+                return null;
+            }
         }
 
-        private DataDictionary TryGetSource()
+        private ContactInstance TryGetSource()
         {
             for (int i = 0; i < SourceCount; i++)
             {
                 lastPlayedIndex++;
                 if (lastPlayedIndex >= SourceCount) lastPlayedIndex = 0;
                 
-                DataDictionary instance = AudioList[lastPlayedIndex].DataDictionary;
-                if (instance[IS_PLAYING].Boolean) continue;
+                ContactInstance instance = Instances[lastPlayedIndex];
+                if (instance.IsPlaying) continue;
 
                 return instance;
             }

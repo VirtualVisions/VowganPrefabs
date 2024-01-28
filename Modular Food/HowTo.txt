@@ -1,0 +1,42 @@
+🍔 Modular Food Prefab 🍔
+--------------------
+Created by Vowgan🌟
+Texture Work by Shyaong💮
+
+
+--------------------
+⬗ How to use:
+    Made sure to be using the latest version of VRChat's SDK through their Creator Companion (VCC).
+	1. Add "Food List" and "Burger Station" prefabs into your scene.
+	2. If you want a custom assortment of props, manually add Plates and Food Part Spawns into your scene.
+	3. For custom Food Part Spawns, select in the dropdown from the library in Food List.
+
+--------------------
+⬢ Prefabs:
+	⬡ Food List: 
+		A list of any and all parts that can be used to generate food pieces.
+		Add more parts by adding prefabs or scene objects into the list.
+		"Height" is the height of the part, so that stacking pieces correctly add on top of each other.
+
+	⬡ Food Part Spawn:
+		The grabbable piece to add onto a plate.
+		Select from a dropdown to choose which food part this spawn will be associated with.
+		This dropdown shows all options within the Food List in your scene.
+
+	⬡ Plate:
+		The object to hold the food on.
+		Place a Food Part Spawn against the plate to add it's associated part onto the plate.
+
+	⬡ Trash:
+		Respawns and clears a plate when placed inside.
+
+	⬡ Burger Station:
+		Fully set up demo of features.
+		Requires a Food List to be added to the scene as well, so you can have multiple burger stations and one Food List.
+
+	⬡ Burger Parts:
+		Model prefabs for all the base burger parts.
+		Many include an LOD system for optimizing between High and Low versions of the burger part model.
+
+
+--------------------

@@ -14,9 +14,9 @@ namespace Vowgan.Contact
         [Range(0, 1)] public float Volume = 1;
         public bool ParentClip;
         public bool CutOffPrevious;
-        public float MaxDistance = ContactAudioPlayer.DEFAULT_MAX_DISTANCE;
+        public float MaxDistance = 32;
         
-        private DataDictionary audioClip;
+        private ContactInstance instance;
         
         
         public override void Interact()
@@ -26,23 +26,23 @@ namespace Vowgan.Contact
 
             if (CutOffPrevious)
             {
-                if (audioClip != null)
+                if (instance != null)
                 {
-                    if (audioClip[ContactAudioPlayer.IS_PLAYING].Boolean)
+                    if (instance)
                     {
-                        ContactAudio._ReturnSource(audioClip);
-                        audioClip = null;
+                        instance._ReturnToPool(); 
+                        instance = null;
                     }
                 }
             }
             
             if (ParentClip)
             {
-                audioClip = ContactAudio._PlaySoundChilded(Clip, playPoint, playPoint.position, MaxDistance, Volume);
+                instance = ContactAudio._PlaySoundChilded(Clip, playPoint, playPoint.position, MaxDistance, Volume);
             }
             else
             {
-                audioClip = ContactAudio._PlaySound(Clip, playPoint.position, MaxDistance, Volume);
+                instance = ContactAudio._PlaySound(Clip, playPoint.position, MaxDistance, Volume);
             }
         }
     }

@@ -37,23 +37,19 @@ namespace Vowgan.Contact
 
         private static void ContactPool()
         {
-            List<AudioSource> audioSourceList = new List<AudioSource>();
-            List<GameObject> gameObjectList = new List<GameObject>();
-            List<Transform> transformList = new List<Transform>();
+            List<ContactInstance> sources = new List<ContactInstance>();
 
             for (int i = 0; i < contactAudioPlayer.SourceCount; i++)
             {
-                GameObject obj = Instantiate(contactAudioPlayer.AudioPrefab, contactAudioPlayer.transform);
-                obj.name = $"{contactAudioPlayer.AudioPrefab.name} {i}";
+                GameObject sourceObj = Instantiate(contactAudioPlayer.AudioPrefab, contactAudioPlayer.transform);
+                sourceObj.name = $"Contact Source {i}";
+                ContactInstance source = sourceObj.GetComponent<ContactInstance>();
+                source.AudioPlayer = contactAudioPlayer;
 
-                audioSourceList.Add(obj.GetComponent<AudioSource>());
-                gameObjectList.Add(obj);
-                transformList.Add(obj.transform);
+                sources.Add(source);
             }
 
-            contactAudioPlayer.AudioSourceList = audioSourceList.ToArray();
-            contactAudioPlayer.GameObjectList = gameObjectList.ToArray();
-            contactAudioPlayer.TransformList = transformList.ToArray();
+            contactAudioPlayer.Instances = sources.ToArray();
         }
 
         private static void PhysicsPresets()
