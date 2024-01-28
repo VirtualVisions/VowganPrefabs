@@ -149,13 +149,31 @@ namespace Vowgan.Music
         {
             if (PlaybackType == MusicPlaybackType.RepeatOne) SongIndex++;
             ChooseNextSong();
+            
+            bool wasPaused = Paused;
             SetPlayerState(MusicPlayerState.Playing);
+            if (wasPaused)
+            {
+                SetProgressWheel(0);
+                _Pause();
+            }
+
+            if (SongIndex == -1) _Stop();
         }
 
         public void _SkipBackwards()
         {
             ChooseNextSong(true);
+
+            bool wasPaused = Paused;
             SetPlayerState(MusicPlayerState.Playing);
+            if (wasPaused)
+            {
+                SetProgressWheel(0);
+                _Pause();
+            }
+
+            if (SongIndex == -1) _Stop();
         }
 
         public void _Stop()
@@ -287,7 +305,7 @@ namespace Vowgan.Music
                     
                     SetProgressWheel(0);
 
-                    ImageIcon.color = new Color(17, 17, 17);
+                    ImageIcon.enabled = false;
                     ImageIcon.sprite = null;
                     TextSongName.text = string.Empty;
                     TextArtistName.text = string.Empty;
@@ -304,8 +322,8 @@ namespace Vowgan.Music
                     LeaveStateTime = clip.length;
                     Source.clip = clip;
                     Source.Play();
-                    
-                    ImageIcon.color = Color.white;
+
+                    ImageIcon.enabled = true;
                     ImageIcon.sprite = SongIcons[SongIndex];
                     TextSongName.text = SongNames[SongIndex];
                     TextArtistName.text = SongArtists[SongIndex];
