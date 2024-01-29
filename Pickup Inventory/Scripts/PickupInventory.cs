@@ -57,6 +57,7 @@ namespace Vowgan.Inventory
         {
             localPlayer = Networking.LocalPlayer;
             ClearMenu();
+            _CloseMenu();
         }
         
         private void Update()

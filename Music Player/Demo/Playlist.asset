@@ -16,7 +16,7 @@ MonoBehaviour:
   - Name: Song 1
     Artist: Vowgan
     Clip: {fileID: 8300000, guid: 2c7a3a2252f756942b292f84977e1f17, type: 3}
-    Icon: {fileID: 21300000, guid: 9296abd40c7c1934cb668aae07b41c69, type: 3}
+    Icon: {fileID: 21300000, guid: 4109d4977ddfb6548b458318e220ac70, type: 3}
   - Name: Song 2
     Artist: Vowgan
     Clip: {fileID: 8300000, guid: e31a2ba7b41a71646b40ece0ae558095, type: 3}

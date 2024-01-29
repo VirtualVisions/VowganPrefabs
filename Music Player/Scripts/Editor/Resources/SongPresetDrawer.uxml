@@ -7,7 +7,7 @@
             </ui:VisualElement>
             <ui:VisualElement name="ClipContainer" style="flex-grow: 1; flex-direction: row;">
                 <ui:Label tabindex="-1" text="Clip" parse-escape-sequences="true" display-tooltip-when-elided="true" style="width: 40px;" />
-                <uie:ObjectField binding-path="Clip" style="flex-grow: 1;" />
+                <uie:ObjectField binding-path="Clip" type="UnityEngine.AudioClip, UnityEngine.AudioModule" style="flex-grow: 1;" />
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement style="flex-grow: 1; width: 50%;">
@@ -17,7 +17,7 @@
             </ui:VisualElement>
             <ui:VisualElement name="IconContainer" style="flex-grow: 1; flex-direction: row;">
                 <ui:Label tabindex="-1" text="Icon" parse-escape-sequences="true" display-tooltip-when-elided="true" style="width: 40px; margin-left: 6px;" />
-                <uie:ObjectField binding-path="Icon" style="flex-grow: 1;" />
+                <uie:ObjectField binding-path="Icon" type="UnityEngine.Sprite, UnityEngine.CoreModule" style="flex-grow: 1;" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
