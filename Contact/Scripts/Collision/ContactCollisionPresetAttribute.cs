@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 #endif
 
-namespace Vowgan.Contact.Physics
+namespace Vowgan.Contact.SoundPhysics
 {
     
     [AttributeUsage(AttributeTargets.Field)]

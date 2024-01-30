@@ -6,7 +6,7 @@ using VRC.SDKBase;
 using VRC.Udon;
 using VRC.Udon.Serialization.OdinSerializer;
 
-namespace Vowgan.Contact.Physics
+namespace Vowgan.Contact.SoundPhysics
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class ContactCollisionObject : ContactBehaviour

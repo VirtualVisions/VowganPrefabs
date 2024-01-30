@@ -8,7 +8,7 @@ using UnityEditor;
 
 using UnityEngine;
 
-namespace Vowgan.Contact.Physics
+namespace Vowgan.Contact.SoundPhysics
 {
     [CreateAssetMenu(fileName = "Collision Preset", menuName = "Contact/Collision Preset")]
     public class ContactCollisionPreset : ScriptableObject

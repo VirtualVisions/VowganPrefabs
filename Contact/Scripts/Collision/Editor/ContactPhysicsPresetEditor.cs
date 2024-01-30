@@ -6,7 +6,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Vowgan.Contact.Physics
+namespace Vowgan.Contact.SoundPhysics
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(ContactCollisionPreset))]

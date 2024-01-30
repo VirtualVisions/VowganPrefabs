@@ -11,7 +11,6 @@ using VRC.Udon.Common.Interfaces;
 
 namespace Vowgan
 {
-
     public enum VRoombaState
     {
         Idle,

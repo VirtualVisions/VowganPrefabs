@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEditor.Callbacks;
 using UnityEngine;
 using Vowgan.Contact.Footsteps;
-using Vowgan.Contact.Physics;
+using Vowgan.Contact.Gunshots;
+using Vowgan.Contact.SoundPhysics;
 
 namespace Vowgan.Contact
 {
@@ -86,12 +87,12 @@ namespace Vowgan.Contact
             ContactFootsteps contactFootsteps = FindObjectOfType<ContactFootsteps>();
             if (contactFootsteps)
             {
-                List<Material[]> materials = new List<Material[]>();
-                List<AudioClip[]> footsteps = new List<AudioClip[]>();
-                List<AudioClip[]> jumpClips = new List<AudioClip[]>();
-                List<AudioClip[]> landingClips = new List<AudioClip[]>();
+                List<Material[]> materials = new();
+                List<AudioClip[]> footsteps = new();
+                List<AudioClip[]> jumpClips = new();
+                List<AudioClip[]> landingClips = new();
 
-                foreach (UnityEngine.Object preset in contactFootsteps.Presets)
+                foreach (Object preset in contactFootsteps.Presets)
                 {
                     ContactFootstepPreset footstepPresets = (ContactFootstepPreset)preset;
                     materials.Add(footstepPresets.Materials.ToArray());
@@ -121,13 +122,13 @@ namespace Vowgan.Contact
 
         private static void GunshotsPresets()
         {
-            Gunshots.ContactGunshots contactGunshots = FindObjectOfType<Gunshots.ContactGunshots>();
+            ContactGunshots contactGunshots = FindObjectOfType<ContactGunshots>();
             if (contactGunshots)
             {
-                List<Material[]> materials = new List<Material[]>();
-                List<AudioClip[]> clips = new List<AudioClip[]>();
+                List<Material[]> materials = new();
+                List<AudioClip[]> clips = new();
 
-                foreach (UnityEngine.Object preset in contactGunshots.Presets)
+                foreach (Object preset in contactGunshots.Presets)
                 {
                     ContactSurfacePreset surfacePreset = (ContactSurfacePreset)preset;
                     materials.Add(surfacePreset.Materials.ToArray());
