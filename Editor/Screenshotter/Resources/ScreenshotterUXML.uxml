@@ -1,0 +1,26 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" view-data-key="CaptureButton" name="CaptureButton" style="height: 64px; border-top-left-radius: 6px; border-bottom-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px;">
+        <ui:VisualElement style="flex-grow: 0; background-image: resource(&apos;Camera Icon&apos;); -unity-background-scale-mode: scale-to-fit; height: 38px; margin-top: 2px;" />
+        <ui:Label tabindex="-1" text="Capture Image" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+    </ui:Button>
+    <ui:VisualElement name="OpenButtons" style="flex-direction: row; height: 28px; margin-top: 2px; flex-shrink: 0;">
+        <ui:Button text="Open Image" parse-escape-sequences="true" display-tooltip-when-elided="true" view-data-key="ScreenshotButton" name="ScreenshotButton" style="flex-grow: 0; margin-right: 0; border-right-width: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; width: 49%; border-top-left-radius: 6px; border-bottom-left-radius: 6px;" />
+        <ui:Button text="Open Folder" parse-escape-sequences="true" display-tooltip-when-elided="true" view-data-key="FolderButton" name="FolderButton" style="flex-grow: 0; margin-left: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; width: 49%; border-top-right-radius: 6px; border-bottom-right-radius: 6px;" />
+    </ui:VisualElement>
+    <ui:ScrollView view-data-key="ScreenshotScroll">
+        <ui:Foldout text="Settings" view-data-key="ScreenshotSettings" value="false" style="flex-shrink: 0; border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; border-left-color: rgba(0, 0, 0, 0.2); border-right-color: rgba(0, 0, 0, 0.2); border-top-color: rgba(0, 0, 0, 0.2); border-bottom-color: rgba(0, 0, 0, 0.2); border-top-left-radius: 6px; border-bottom-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; margin-left: 6px; margin-right: 6px; margin-top: 6px; margin-bottom: 6px;">
+            <uie:ObjectField label="Camera" name="CameraField" type="UnityEngine.Camera, UnityEngine.CoreModule" binding-path="CaptureCamera" />
+            <ui:Toggle label="Transparent" name="TransparentToggle" binding-path="Transparent" />
+            <ui:Toggle label="Open Image" name="OpenImageToggle" binding-path="OpenImageAfterCapture" />
+            <ui:EnumField label="Resolution" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" value="Center" binding-path="ResolutionPresetValue" name="ResolutionField" style="margin-top: 10px;" />
+            <ui:IntegerField label="Width" value="42" name="WidthField" binding-path="ImageWidth" style="margin-left: 16px;" />
+            <ui:IntegerField label="Height" value="42" name="HeightField" binding-path="ImageHeight" style="margin-left: 16px;" />
+            <ui:VisualElement style="flex-grow: 1; flex-direction: row; margin-top: 10px;">
+                <ui:TextField picking-mode="Ignore" label="Save Location" value="filler text" name="SaveLocationField" binding-path="SaveLocation" style="flex-grow: 1; margin-right: 0; text-overflow: ellipsis; flex-shrink: 1;" />
+                <ui:Button text="Browse" parse-escape-sequences="true" display-tooltip-when-elided="true" view-data-key="BrowseButton" name="BrowseButton" style="margin-left: 0;" />
+            </ui:VisualElement>
+            <ui:EnumField label="Naming Format" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" value="Center" binding-path="NamingFormatValue" name="NamingFormatField" style="margin-top: 10px;" />
+            <ui:TextField picking-mode="Ignore" label="Custom Name" value="filler text" name="CustomNameField" binding-path="CustomName" style="margin-left: 16px; text-overflow: ellipsis;" />
+        </ui:Foldout>
+    </ui:ScrollView>
+</ui:UXML>

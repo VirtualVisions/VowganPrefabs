@@ -1,108 +1,85 @@
 ﻿
 using System;
 using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 namespace VowganVR
 {
     public class Screenshotter : EditorWindow
     {
         
-        // Date  9-13-2021
-        // Build v0.4
+        public static Camera SavedCamera;
         
-        private bool transparent;
-        private bool autoOpen = true;
-        private string folderPath = "";
-        private string lastImage = "";
+        public Camera CaptureCamera;
+        public bool Transparent;
+        public bool OpenImageAfterCapture = true;
+        public string SaveLocation = "";
+        public string LastImage = "";
+        public ResolutionPresets ResolutionPresetValue;
+        public int ImageWidth = 1920;
+        public int ImageHeight = 1080;
+        public NamingFormats NamingFormatValue;
+        public string CustomName = "Screenshot";
         
-        private string[] sFormat =
+        public enum NamingFormats
         {
-            "SceneName Hour-Minute-Second",
-            "SceneName Month-Date-Year Hour-Minute-Second",
-            "Month-Date-Year Hour-Minute-Second",
-            "CustomName Hour-Minute-Second"
-        };
-        
-        private readonly Vector2[] presets =
-        {
-            new Vector2(1920, 1080),
-            new Vector2(1920, 1080),
-            new Vector2(1920, 1080),
-            new Vector2(2560, 1440),
-            new Vector2(3840, 2160),
-            new Vector2(7680, 4320),
-            new Vector2(320, 240),
-            new Vector2(640, 480),
-            new Vector2(800, 600),
-            new Vector2(1024, 768),
-            new Vector2(1280, 960),
-            new Vector2(1536, 1180),
-            new Vector2(1600, 1200),
-            new Vector2(2048, 1536),
-            new Vector2(2240, 1680),
-            new Vector2(2560, 1920),
-            new Vector2(3032, 2008),
-            new Vector2(3072, 2304),
-            new Vector2(3264, 2448),
+            SceneNameHhMmSs,
+            SceneNameMonthDateYearHhMmSs,
+            MonthDateYearHhMmSs,
+            CustomNameHhMmSs
         };
 
-        private readonly string[] presetsString =
+        public enum ResolutionPresets
         {
-            "Game Resolution",
-            "Custom",
-            "1920, 1080",
-            "2560, 1440",
-            "3840, 2160",
-            "7680, 4320",
-            "320, 240",
-            "640, 480",
-            "800, 600",
-            "1024, 768",
-            "1280, 960",
-            "1536, 1180",
-            "1600, 1200",
-            "2048, 1536",
-            "2240, 1680",
-            "2560, 1920",
-            "3032, 2008",
-            "3072, 2304",
-            "3264, 2448"
+            GameView,
+            Custom,
         };
         
-        private string customName = "Screenshot";
-        private int sFormatIndex;
-        private int presetsIndex;
+        private const string PREF_TRANSPARENT = "Vowgan/Screenshotter/Transparent";
+        private const string PREF_AUTO_OPEN = "Vowgan/Screenshotter/AutoOpen";
+        private const string PREF_SAVE_LOCATION = "Vowgan/Screenshotter/SaveLocation";
+        private const string PREF_LAST_IMAGE = "Vowgan/Screenshotter/LastImage";
+        private const string PREF_IMAGE_WIDTH = "Vowgan/Screenshotter/ImageWidth";
+        private const string PREF_IMAGE_HEIGHT = "Vowgan/Screenshotter/ImageHeight";
+        private const string PREF_SAVE_FORMAT = "Vowgan/Screenshotter/SFormatIndex";
+        private const string PREF_PRESETS_INDEX = "Vowgan/Screenshotter/PresetsIndex";
 
-        private Camera captureCamera;
-        private int imageWidth = 1920;
-        private int imageHeight = 1080;
+        private Button CaptureButton;
+        private Button ScreenshotButton;
+        private Button FolderButton;
+        private ObjectField CameraField;
+        private Toggle TransparentToggle;
+        private Toggle OpenImageToggle;
+        private EnumField ResolutionField;
+        private IntegerField WidthField;
+        private IntegerField HeightField;
+        private TextField SaveLocationField;
+        private Button BrowseButton;
+        private EnumField NamingFormatField;
+        private TextField CustomNameField;
 
-        private bool showCameraSelection = true;
-        private bool showImageResolution = true;
-        private bool showSaveImage = true;
+        private SerializedObject serializedObject;
+        private SerializedProperty propCaptureCamera;
+        private SerializedProperty propTransparent;
+        private SerializedProperty propOpenImageAfterCapture;
+        private SerializedProperty propSaveLocation;
+        private SerializedProperty propLastImage;
+        private SerializedProperty propResolutionPresetIndex;
+        private SerializedProperty propImageWidth;
+        private SerializedProperty propImageHeight;
+        private SerializedProperty propCustomName;
+        private SerializedProperty propNameFormatIndex;
 
-        private GUIStyle iconStyle;
-        
-        private const string PrefTransparent = "Vowgan/ScreenshotterTransparent";
-        private const string PrefAutoOpen = "Vowgan/ScreenshotterAutoOpen";
-        private const string PrefFolderPath = "Vowgan/ScreenshotterFolderPath";
-        private const string PrefLastImage = "Vowgan/ScreenshotterLastImage";
-        private const string PrefImageWidth = "Vowgan/ScreenshotterImageWidth";
-        private const string PrefImageHeight = "Vowgan/ScreenshotterImageHeight";
-        private const string PrefShowCameraSelection = "Vowgan/ScreenshotterShowCameraSelection";
-        private const string PrefShowImageResolution = "Vowgan/ScreenshotterShowImageResolution";
-        private const string PrefShowSaveImage = "Vowgan/ScreenshotterShowSaveImage";
-        private const string PrefSFormatIndex = "Vowgan/ScreenshotterSFormatIndex";
-        private const string PrefPresetsIndex = "Vowgan/ScreenshotterPresetsIndex";
-        
-        
+
         [MenuItem("Tools/Vowgan/Screenshotter")]
         public static void ShowWindow()
         {
             EditorWindow win = GetWindow<Screenshotter>();
-            win.minSize = new Vector2(230, 300);
+            win.minSize = new Vector2(150, 100);
             win.titleContent.image = EditorGUIUtility.ObjectContent(null, typeof(Camera)).image;
             win.titleContent.text = "Screenshotter";
             win.Show();
@@ -110,281 +87,217 @@ namespace VowganVR
 
         private void OnEnable()
         {
-            iconStyle = new GUIStyle
+            CaptureCamera = SavedCamera;
+            if (CaptureCamera == null)
             {
-                normal =
+                CaptureCamera = Camera.main;
+                SavedCamera = CaptureCamera;
+            }
+            
+            EditorSceneManager.sceneOpened += (scene, mode) =>
+            {
+                CaptureCamera = SavedCamera;
+                if (CaptureCamera == null)
                 {
-                    background = Resources.Load("VV Icon") as Texture2D,
-                },
-                fixedHeight = 64,
-                fixedWidth = 64
+                    CaptureCamera = Camera.main;
+                    SavedCamera = CaptureCamera;
+                }
             };
             
-            if (EditorPrefs.HasKey(PrefTransparent)) transparent = EditorPrefs.GetBool(PrefTransparent); 
-            if (EditorPrefs.HasKey(PrefAutoOpen)) autoOpen = EditorPrefs.GetBool(PrefAutoOpen);
-            if (EditorPrefs.HasKey(PrefFolderPath)) folderPath = EditorPrefs.GetString(PrefFolderPath);
-            if (EditorPrefs.HasKey(PrefLastImage)) lastImage = EditorPrefs.GetString(PrefLastImage);
-            if (EditorPrefs.HasKey(PrefImageWidth)) imageWidth = EditorPrefs.GetInt(PrefImageWidth);
-            if (EditorPrefs.HasKey(PrefImageHeight)) imageHeight = EditorPrefs.GetInt(PrefImageHeight);
-            if (EditorPrefs.HasKey(PrefShowCameraSelection)) showCameraSelection = EditorPrefs.GetBool(PrefShowCameraSelection);
-            if (EditorPrefs.HasKey(PrefShowImageResolution)) showImageResolution = EditorPrefs.GetBool(PrefShowImageResolution);
-            if (EditorPrefs.HasKey(PrefShowSaveImage)) showSaveImage = EditorPrefs.GetBool(PrefShowSaveImage);
-            if (EditorPrefs.HasKey(PrefSFormatIndex)) sFormatIndex = EditorPrefs.GetInt(PrefSFormatIndex);
-            if (EditorPrefs.HasKey(PrefPresetsIndex)) presetsIndex = EditorPrefs.GetInt(PrefPresetsIndex);
+            if (EditorPrefs.HasKey(PREF_TRANSPARENT)) Transparent = EditorPrefs.GetBool(PREF_TRANSPARENT);
+            if (EditorPrefs.HasKey(PREF_AUTO_OPEN)) OpenImageAfterCapture = EditorPrefs.GetBool(PREF_AUTO_OPEN);
+            if (EditorPrefs.HasKey(PREF_SAVE_LOCATION)) SaveLocation = EditorPrefs.GetString(PREF_SAVE_LOCATION);
+            if (EditorPrefs.HasKey(PREF_LAST_IMAGE)) LastImage = EditorPrefs.GetString(PREF_LAST_IMAGE);
+            if (EditorPrefs.HasKey(PREF_IMAGE_WIDTH)) ImageWidth = EditorPrefs.GetInt(PREF_IMAGE_WIDTH);
+            if (EditorPrefs.HasKey(PREF_IMAGE_HEIGHT)) ImageHeight = EditorPrefs.GetInt(PREF_IMAGE_HEIGHT);
+            if (EditorPrefs.HasKey(PREF_SAVE_FORMAT)) NamingFormatValue = (NamingFormats)EditorPrefs.GetInt(PREF_SAVE_FORMAT);
+            if (EditorPrefs.HasKey(PREF_PRESETS_INDEX)) ResolutionPresetValue = (ResolutionPresets)EditorPrefs.GetInt(PREF_PRESETS_INDEX);
+            
+            serializedObject = new(this);
+            propCaptureCamera = serializedObject.FindProperty(nameof(CaptureCamera));
+            propTransparent = serializedObject.FindProperty(nameof(Transparent));
+            propOpenImageAfterCapture = serializedObject.FindProperty(nameof(OpenImageAfterCapture));
+            propSaveLocation = serializedObject.FindProperty(nameof(SaveLocation));
+            propLastImage = serializedObject.FindProperty(nameof(LastImage));
+            propResolutionPresetIndex = serializedObject.FindProperty(nameof(ResolutionPresetValue));
+            propImageWidth = serializedObject.FindProperty(nameof(ImageWidth));
+            propImageHeight = serializedObject.FindProperty(nameof(ImageHeight));
+            propCustomName = serializedObject.FindProperty(nameof(CustomName));
+            propNameFormatIndex = serializedObject.FindProperty(nameof(NamingFormatValue));
         }
 
-        private void OnGUI()
+        private void CreateGUI()
         {
-            DrawTitle();
+            VisualTreeAsset uxml = Resources.Load<VisualTreeAsset>("ScreenshotterUXML");
+            uxml.CloneTree(rootVisualElement);
 
-            GUILayout.Space(5);
+            rootVisualElement.Bind(new(this));
+            
+            CaptureButton = rootVisualElement.Query<Button>("CaptureButton");
+            CaptureButton.clicked += CaptureButtonOnClicked;
+            
+            ScreenshotButton = rootVisualElement.Query<Button>("ScreenshotButton");
+            ScreenshotButton.clicked += () => Application.OpenURL("file://" + LastImage);
+            
+            FolderButton = rootVisualElement.Query<Button>("FolderButton");
+            FolderButton.clicked += () => EditorUtility.RevealInFinder(SaveLocation);
+            
+            CameraField = rootVisualElement.Query<ObjectField>("CameraField");
+            CameraField.RegisterValueChangedCallback(evt =>
+            {
+                SavedCamera = (Camera)evt.newValue;
+                SetEditorPrefs();
+            });
+            
+            TransparentToggle = rootVisualElement.Query<Toggle>("TransparentToggle");
+            TransparentToggle.RegisterValueChangedCallback(evt => SetEditorPrefs());
+            
+            OpenImageToggle = rootVisualElement.Query<Toggle>("OpenImageToggle");
+            OpenImageToggle.RegisterValueChangedCallback(evt => SetEditorPrefs());
+            
+            ResolutionField = rootVisualElement.Query<EnumField>("ResolutionField");
+            ResolutionField.RegisterValueChangedCallback(evt =>
+            {
+                WidthField.SetEnabled(ResolutionPresetValue == ResolutionPresets.Custom);
+                HeightField.SetEnabled(ResolutionPresetValue == ResolutionPresets.Custom);
+                SetEditorPrefs();
+            });
+            ResolutionField.SetValueWithoutNotify(ResolutionPresetValue);
+            
+            WidthField = rootVisualElement.Query<IntegerField>("WidthField");
+            WidthField.RegisterValueChangedCallback(evt =>
+            {
+                if (evt.newValue <= 0) WidthField.value = 1;
+                SetEditorPrefs();
+            });
+            
+            HeightField = rootVisualElement.Query<IntegerField>("HeightField");
+            HeightField.RegisterValueChangedCallback(evt =>
+            {
+                if (evt.newValue <= 0) HeightField.value = 1;
+                SetEditorPrefs();
+            });
+            
+            SaveLocationField = rootVisualElement.Query<TextField>("SaveLocationField");
+            SaveLocationField.RegisterValueChangedCallback(evt => SetEditorPrefs());
+            
+            BrowseButton = rootVisualElement.Query<Button>("BrowseButton");
+            BrowseButton.clicked += () => SaveLocation = EditorUtility.SaveFolderPanel(
+                "Path to Save Images", SaveLocation, Application.dataPath);
+            
+            NamingFormatField = rootVisualElement.Query<EnumField>("NamingFormatField");
+            NamingFormatField.RegisterValueChangedCallback(evt =>
+            {
+                CustomNameField.SetEnabled(NamingFormatValue == NamingFormats.CustomNameHhMmSs);
+                SetEditorPrefs();
+            });
 
-            GUILayout.BeginVertical(EditorStyles.helpBox);
-            GUILayout.Space(5);
-            CameraSelection();
+            CustomNameField = rootVisualElement.Query<TextField>("CustomNameField");
+            CustomNameField.RegisterValueChangedCallback(evt => SetEditorPrefs());
+            
+            
+            WidthField.SetEnabled(ResolutionPresetValue == ResolutionPresets.Custom);
+            HeightField.SetEnabled(ResolutionPresetValue == ResolutionPresets.Custom);
+            CustomNameField.SetEnabled(NamingFormatValue == NamingFormats.CustomNameHhMmSs);
+        }
 
-            GUILayout.Space(5);
-
-            ImageResolution();
-
-            GUILayout.Space(5);
-
-            SaveImage();
-            GUILayout.Space(5);
-            GUILayout.EndVertical();
-
-            SetEditorPrefs();
+        private void CaptureButtonOnClicked()
+        {
+            if (SaveLocation == "")
+            {
+                SaveLocation = EditorUtility.SaveFolderPanel("Image Save Location", SaveLocation, Application.dataPath);
+                RenderImage();
+            }
+            else
+            {
+                RenderImage();
+            }
         }
         
-        private void DrawTitle()
-        {
-            GUILayout.BeginHorizontal();
-            
-            GUILayout.BeginVertical();
-            GUILayout.Box("", iconStyle);
-            GUILayout.EndVertical();
-            
-            GUILayout.BeginVertical();
-            
-            GUILayout.Label("Screenshotter Settings", EditorStyles.boldLabel);
-            GUILayout.Label("VowganVR");
-            
-            GUILayout.EndVertical();
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            
-            if (GUILayout.Button("Capture Image", GUILayout.MinHeight(60)))
-            {
-                if (folderPath == "")
-                {
-                    folderPath = EditorUtility.SaveFolderPanel("Image Save Location", folderPath, Application.dataPath);
-                    RenderImage();
-                }
-                else
-                {
-                    RenderImage();
-                }
-            }
-
-            GUILayout.Space(5);
-            
-            GUILayout.BeginHorizontal();
-            EditorGUI.BeginDisabledGroup(lastImage == string.Empty);
-            if (GUILayout.Button("Open Screenshot", EditorStyles.miniButtonLeft, GUILayout.Height(20)))
-            {
-                Application.OpenURL("file://" + lastImage);
-            }
-            EditorGUI.EndDisabledGroup();
-
-            if (GUILayout.Button("Open Folder", EditorStyles.miniButtonRight, GUILayout.Height(20)) && !string.IsNullOrEmpty(folderPath))
-            {
-                EditorUtility.RevealInFinder(folderPath);
-            }
-
-            GUILayout.EndHorizontal();
-            
-            GUILayout.Space(2);
-            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-            GUILayout.Space(2);
-            
-        }
-        
-        private void CameraSelection()
-        {
-            showCameraSelection = EditorGUILayout.Foldout(showCameraSelection, "Select Camera", true);
-            if (showCameraSelection)
-            {
-                GUILayout.BeginVertical("box");
-                
-                captureCamera = (Camera) EditorGUILayout.ObjectField(captureCamera, typeof(Camera), true);
-    
-                if (captureCamera == null) captureCamera = Camera.main;
-    
-                transparent = EditorGUILayout.ToggleLeft("Transparent", transparent);
-                autoOpen = EditorGUILayout.ToggleLeft("Open Image", autoOpen);
-                GUILayout.Space(2);
-                GUILayout.EndVertical();
-            }
-        }
-
-        private void ImageResolution()
-        {
-            showImageResolution = EditorGUILayout.Foldout(showImageResolution, "Resolution", true);
-            if (showImageResolution)
-            {
-                GUILayout.BeginVertical("box");
-                
-                EditorGUI.BeginChangeCheck();
-                presetsIndex = EditorGUILayout.Popup("Options", presetsIndex, presetsString);
-                if (EditorGUI.EndChangeCheck())
-                {
-                    imageWidth = (int) presets[presetsIndex].x;
-                    imageHeight = (int) presets[presetsIndex].y;
-                }
-                if (presetsIndex == 1)
-                {
-                    imageWidth = EditorGUILayout.IntField("Width", imageWidth);
-                    imageHeight = EditorGUILayout.IntField("Height", imageHeight);
-                    if (imageHeight <= 0) imageHeight = 1;
-                    if (imageWidth <= 0) imageWidth = 1;
-                }
-
-                GUILayout.Space(4);
-                GUILayout.EndVertical();
-            }
-        }
-
-        private void SaveImage()
-        {
-            showSaveImage = EditorGUILayout.Foldout(showSaveImage, "Save Image", true);
-            if (showSaveImage)
-            {
-                GUILayout.BeginVertical("box");
-
-                GUILayout.BeginHorizontal();
-                EditorGUILayout.TextField(folderPath);
-                if (GUILayout.Button("Browse", EditorStyles.miniButtonRight, GUILayout.ExpandWidth(false)))
-                {
-                    folderPath = EditorUtility.SaveFolderPanel("Path to Save Images", folderPath, Application.dataPath);
-                }
-
-                GUILayout.EndHorizontal();
-                GUILayout.Space(4);
-
-                sFormatIndex = EditorGUILayout.Popup("Naming Format", sFormatIndex, sFormat);
-
-                if (sFormatIndex == 3 ^ sFormatIndex == 4)
-                {
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Custom Name");
-                    customName = GUILayout.TextField(customName);
-                    GUILayout.EndHorizontal();
-                }
-
-                GUILayout.Space(8);
-                GUILayout.EndVertical();
-            }
-        }
-
         private void SetEditorPrefs()
         {
-            EditorPrefs.SetBool(PrefTransparent, transparent);
-            EditorPrefs.SetBool(PrefAutoOpen, autoOpen);
-            EditorPrefs.SetString(PrefFolderPath, folderPath);
-            EditorPrefs.SetString(PrefLastImage, lastImage);
-            EditorPrefs.SetInt(PrefImageWidth, imageWidth);
-            EditorPrefs.SetInt(PrefImageHeight, imageHeight);
-            EditorPrefs.SetBool(PrefShowImageResolution, showImageResolution);
-            EditorPrefs.SetBool(PrefShowCameraSelection, showCameraSelection);
-            EditorPrefs.SetBool(PrefShowSaveImage, showSaveImage);
-            EditorPrefs.SetInt(PrefSFormatIndex, sFormatIndex);
-            EditorPrefs.SetInt(PrefPresetsIndex, presetsIndex);
+            EditorPrefs.SetBool(PREF_TRANSPARENT, Transparent);
+            EditorPrefs.SetBool(PREF_AUTO_OPEN, OpenImageAfterCapture);
+            EditorPrefs.SetString(PREF_SAVE_LOCATION, SaveLocation);
+            EditorPrefs.SetString(PREF_LAST_IMAGE, LastImage);
+            EditorPrefs.SetInt(PREF_IMAGE_WIDTH, ImageWidth);
+            EditorPrefs.SetInt(PREF_IMAGE_HEIGHT, ImageHeight);
+            EditorPrefs.SetInt(PREF_SAVE_FORMAT, (int)NamingFormatValue);
+            EditorPrefs.SetInt(PREF_PRESETS_INDEX, (int)ResolutionPresetValue);
         }
 
         private void RenderImage()
         {
-            var rt = new RenderTexture(imageWidth, imageHeight, 24);
-            captureCamera.targetTexture = rt;
-
-            TextureFormat tFormat;
-
-            if (transparent)
-            {
-                tFormat = TextureFormat.ARGB32;
-            }
-            else
-            {
-                tFormat = TextureFormat.RGB24;
-            }
-
             Vector2 resolution;
-            switch (presetsIndex)
+            switch (ResolutionPresetValue)
             {
-                case 0: // Game Resolution
-                    resolution = new Vector2(Handles.GetMainGameViewSize().x, Handles.GetMainGameViewSize().y);
+                default:
+                case ResolutionPresets.GameView:
+                    resolution = Handles.GetMainGameViewSize();
                     break;
-                case 1: // Custom
-                    resolution = new Vector2(imageWidth, imageHeight);
-                    break;
-                default: // Use Preset
-                    resolution = presets[presetsIndex];
+                case ResolutionPresets.Custom:
+                    resolution = new(ImageWidth, ImageHeight);
                     break;
             }
-            
-            Texture2D screenShot = new Texture2D((int)resolution.x, (int)resolution.y, tFormat, false);
 
-            if (transparent)
+            RenderTexture rt = new((int)resolution.x, (int)resolution.y, 24);
+            CaptureCamera.targetTexture = rt;
+
+            TextureFormat textureFormat = Transparent ? TextureFormat.ARGB32 : TextureFormat.RGB24;
+
+            Texture2D screenShot = new((int)resolution.x, (int)resolution.y, textureFormat, false);
+
+            if (Transparent)
             {
-                var nativeFlags = captureCamera.clearFlags;
-                captureCamera.clearFlags = CameraClearFlags.Nothing;
-                captureCamera.Render();
+                CameraClearFlags nativeFlags = CaptureCamera.clearFlags;
+                CaptureCamera.clearFlags = CameraClearFlags.Nothing;
+                CaptureCamera.Render();
                 RenderTexture.active = rt;
-                screenShot.ReadPixels(new Rect(0, 0, imageWidth, imageHeight), 0, 0);
-                captureCamera.targetTexture = null;
+                screenShot.ReadPixels(new(0, 0, resolution.x, resolution.y), 0, 0);
+                CaptureCamera.targetTexture = null;
                 RenderTexture.active = null;
-                captureCamera.clearFlags = nativeFlags;
+                CaptureCamera.clearFlags = nativeFlags;
             }
             else
             {
-                captureCamera.Render();
+                CaptureCamera.Render();
                 RenderTexture.active = rt;
-                screenShot.ReadPixels(new Rect(0, 0, imageWidth, imageHeight), 0, 0);
-                captureCamera.targetTexture = null;
+                screenShot.ReadPixels(new(0, 0, resolution.x, resolution.y), 0, 0);
+                CaptureCamera.targetTexture = null;
                 RenderTexture.active = null;
             }
 
             byte[] bytes = screenShot.EncodeToPNG();
-            var filename = NameImage();
+            string filename = NameImage();
 
             System.IO.File.WriteAllBytes(filename, bytes);
-            if (autoOpen) Application.OpenURL(filename);
+            if (OpenImageAfterCapture) Application.OpenURL(filename);
         }
-        
+
         private string NameImage()
         {
             string newName = "Screenshot";
-            var scene = SceneManager.GetActiveScene();
-
-            switch (sFormatIndex)
+            Scene scene = SceneManager.GetActiveScene();
+            
+            switch (NamingFormatValue)
             {
-                case 0:
-                    newName = folderPath + "/" + scene.name + "_" + DateTime.Now.ToString("HH-mm-ss") + ".png";
+                case NamingFormats.SceneNameHhMmSs:
+                    newName = $"{SaveLocation}/{scene.name}_{DateTime.Now:HH-mm-ss}.png";
                     break;
-                case 1:
-                    newName = folderPath + "/" + scene.name + "_" + DateTime.Now.ToString("MM-dd-yyyy'_'HH-mm-ss") + ".png";
+                case NamingFormats.SceneNameMonthDateYearHhMmSs:
+                    newName = $"{SaveLocation}/{scene.name}_{DateTime.Now:MM-dd-yyyy'_'HH-mm-ss}.png";
                     break;
-                case 2:
-                    newName = folderPath + "/" + DateTime.Now.ToString("MM-dd-yyyy'_'HH-mm-ss") + ".png";
+                case NamingFormats.MonthDateYearHhMmSs:
+                    newName = $"{SaveLocation}/{DateTime.Now:MM-dd-yyyy'_'HH-mm-ss}.png";
                     break;
-                case 3:
-                    newName = folderPath + "/" + customName + "_" + DateTime.Now.ToString("HH-mm-ss") + ".png";
+                case NamingFormats.CustomNameHhMmSs:
+                    newName = $"{SaveLocation}/{CustomName}_{DateTime.Now:HH-mm-ss}.png";
                     break;
             }
-
-            lastImage = newName;
-
+            
+            LastImage = newName;
+            
             return newName;
         }
-
     }
 }
