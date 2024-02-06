@@ -36,6 +36,8 @@ namespace Vowgan.Music
                 player.SongArtists = songArtists.ToArray();
                 player.SongClips = songClips.ToArray();
                 player.SongIcons = songIcons.ToArray();
+
+                player.Playlist = null;
             }
         }
         
