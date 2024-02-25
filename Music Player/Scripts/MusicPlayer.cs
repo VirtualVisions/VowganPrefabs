@@ -52,24 +52,24 @@ namespace Vowgan.Music
         
         [Header("References")]
         [SerializeField] private AudioSource Source;
-        [SerializeField] private  Transform[] PulseVisuals;
-        [SerializeField] private  Image WheelProgress;
-        [SerializeField] private  GameObject ButtonPlay;
-        [SerializeField] private  GameObject ButtonPause;
-        [SerializeField] private  GameObject ButtonRepeat;
-        [SerializeField] private  GameObject ButtonRepeatAll;
-        [SerializeField] private  GameObject ButtonRepeat1;
-        [SerializeField] private  GameObject ButtonShuffle;
-        [SerializeField] private  GameObject ButtonVolumeMute;
-        [SerializeField] private  GameObject ButtonVolumeUnmute;
-        [SerializeField] private  Image VolumeMute;
-        [SerializeField] private  Slider SliderVolume;
-        [SerializeField] private  Sprite Volume0;
-        [SerializeField] private  Sprite Volume1;
-        [SerializeField] private  Sprite Volume2;
-        [SerializeField] private  Image ImageIcon;
-        [SerializeField] private  TextMeshProUGUI TextSongName;
-        [SerializeField] private  TextMeshProUGUI TextArtistName;
+        [SerializeField] private Transform[] PulseVisuals;
+        [SerializeField] private Image WheelProgress;
+        [SerializeField] private GameObject ButtonPlay;
+        [SerializeField] private GameObject ButtonPause;
+        [SerializeField] private GameObject ButtonRepeat;
+        [SerializeField] private GameObject ButtonRepeatAll;
+        [SerializeField] private GameObject ButtonRepeat1;
+        [SerializeField] private GameObject ButtonShuffle;
+        [SerializeField] private GameObject ButtonVolumeMute;
+        [SerializeField] private GameObject ButtonVolumeUnmute;
+        [SerializeField] private Image VolumeMute;
+        [SerializeField] private Slider SliderVolume;
+        [SerializeField] private Sprite Volume0;
+        [SerializeField] private Sprite Volume1;
+        [SerializeField] private Sprite Volume2;
+        [SerializeField] private Image ImageIcon;
+        [SerializeField] private TextMeshProUGUI TextSongName;
+        [SerializeField] private TextMeshProUGUI TextArtistName;
         
         
         private int songCount;
@@ -79,13 +79,10 @@ namespace Vowgan.Music
         private void Start()
         {
             songCount = SongClips.Length;
-
-            SetPlayType(MusicPlaybackType.Normal);
             
-            if (PlayOnStart)
-            {
-                _Play();
-            }
+            SetPlayType(PlaybackType);
+            
+            if (PlayOnStart) _Play();
         }
 
         private void Update()
@@ -124,7 +121,17 @@ namespace Vowgan.Music
             else
             {
                 _Resume();
-                if (SongIndex == -1) SongIndex = 0;
+                switch (PlaybackType)
+                {
+                    case MusicPlaybackType.Normal:
+                    case MusicPlaybackType.RepeatAll:
+                    case MusicPlaybackType.RepeatOne:
+                        if (SongIndex == -1) SongIndex = 0;
+                        break;
+                    case MusicPlaybackType.Shuffle:
+                        SongIndex = UnityEngine.Random.Range(0, songCount);
+                        break;
+                }
                 SetPlayerState(MusicPlayerState.Playing);
             }
         }
