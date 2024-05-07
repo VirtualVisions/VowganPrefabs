@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using UdonSharpEditor;
 using UnityEditor;
 using UnityEditor.Callbacks;
@@ -32,9 +30,53 @@ namespace Vowgan.Inventory
                 {
                     UdonManager.Instance.RegisterUdonBehaviour(udonProxy);
                 }
-                
+            }
+        }
+        
+        
+        [MenuItem ("CONTEXT/VRCPickup/Create Inventory Item")]
+        private static void CreateInventoryItem (MenuCommand command) {
+            VRCPickup pickup = (VRCPickup)command.context;
+            if (PrefabUtility.IsPartOfImmutablePrefab(pickup)) return;
+            
+            foreach (InventoryItem invItem in FindObjectsOfType<InventoryItem>())
+            {
+                if (invItem.Pickup == pickup)
+                {
+                    EditorUtility.DisplayDialog("Inventory Pickups", $"{pickup.gameObject} is already an inventory item.", "Return");
+                    Selection.objects = new[] { invItem.gameObject };
+                    return;
+                }
+            }
+
+            GameObject itemObj = new() { name = pickup.gameObject.name + " Item" };
+            Transform itemTrans = itemObj.transform;
+            Transform pickupTrans = pickup.transform;
+            
+            if (!PrefabUtility.IsPartOfAnyPrefab(pickup))
+            {
+                itemTrans.SetParent(pickupTrans.parent);
+                itemTrans.SetPositionAndRotation(pickupTrans.position, pickupTrans.rotation);
+                pickupTrans.SetParent(itemTrans);
+            }
+
+            InventoryItem item;
+
+            if (pickup.GetComponent<VRCObjectSync>())
+            {
+                item = itemObj.AddUdonSharpComponent<InventoryItemSynced>();
+            }
+            else
+            {
+                item = itemObj.AddUdonSharpComponent<InventoryItem>();
             }
             
+            item.Pickup = pickup;
+
+            Undo.RegisterCreatedObjectUndo(itemObj, "Created Inventory Item");
+            
+            Selection.objects = new[] { itemObj };
         }
+        
     }
 }
